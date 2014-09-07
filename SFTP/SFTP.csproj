@@ -32,9 +32,8 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpSSH, Version=2.0.1.24542, Culture=neutral, PublicKeyToken=ebad8a5963bb8e78, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\sharpssh\bin\Debug\SharpSSH.dll</HintPath>
+    <Reference Include="SharpSSH, Version=2.0.1.25561, Culture=neutral, PublicKeyToken=ebad8a5963bb8e78, processorArchitecture=MSIL">
+      <HintPath>SharpSSH.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
