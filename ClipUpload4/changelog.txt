@@ -1,0 +1,62 @@
+4.03
+	-	Added explorer shell extension. Work in progress.
+	- Added secondary upload actions to Dropbox, FTP, SFTP and Self Hoster, which are triggered by right click and allow for custom filenames.
+
+4.02
+  - Fixed some inconsistencies.
+  - Deprecated info.txt files in addons.
+  - Addons can now give URLs to ClipUpload for menu information.
+  - Addon development is now more user-friendly.
+
+4.01
+  - Fixed Facebook addon not working properly.
+
+4.00
+  - New release! Lots of new features. Please refer to our website.
+
+3.12
+	- Hotfix for the PostHttp addon not working.
+
+3.11
+	- Added authenticated Imgur support.
+	- Added a debug.txt that outputs detailed information about upload failures and more.
+	- Added a Jpeg compression setting when another format exceeds a certain amount of KB.
+	- Added an "Authorization" field to PostHttp endpoints. (Base64 string sent as "auth" POST field)
+	- Added a small list of recently uploaded images in the upload menu.
+	- Fixed a bug with Imgur where it would spit out a bunch of HTML when Imgur is over capacity.
+	- Fixed a bug with FTP where it would fail uploading text.
+
+3.10
+	- Added animated gif support to screenshot dragging. Press O while dragging to activate.
+	- Added a new basic built-in image editor. This is a work-in-progress.
+	- Added scaling of screenshots while dragging images and scrolling the mousewheel.
+	- Added Facebook addon.
+	- Added auto updater.
+	- Fixed an issue where the progress bar window would have a flickering progress bar.
+	- Fixed a bug with the progressbar window crashing on Windows XP x64.
+	- Fixed a bug with the progressbar window that would steal focus in some cases.
+	- Fixed a couple memory leaks and improved overall performance.
+
+3.04
+	- Fixed a bug that messed up certain keyboard layouts with characters such as `, ~, ", etc.
+
+3.03
+	- Added dragging edit process feature, open an image editing software with the currently selected drag region.
+	- Added measuring when dragging screenshots.
+	- Revamped the settings window.
+
+3.02
+	- Added HTTP proxy settings.
+	- Added an option to disable checking for updates at startup.
+	- Hopefully fixed the "Requested Clipboard operation did not succeed" crash.
+
+3.01
+	- Added the Progress Bar, check the settings in the main Settings menu.
+	- Added a cancel feature, just close the progress bar window.
+	- Added PostHttp addon.
+	- Added shortcuts for the Paste targets. (Clipboard -> FTP, Clipboard -> Imgur, etc.)
+	- Added a Binary mode option to the FTP addon.
+	- Fixed a performance issue with addons.
+
+3.00
+	- Initial release!

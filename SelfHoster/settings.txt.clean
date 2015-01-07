@@ -1,0 +1,17 @@
+HostInterface=0.0.0.0
+HostPort=80
+HostHTTP=
+HostAccessLog=False
+HostNotify=False
+HostDelete=False
+Format=PNG
+UseMD5=False
+ShortMD5=False
+Length=8
+ShortcutDragModifiers=
+ShortcutDragKey=
+ShortcutPasteModifiers=
+ShortcutPasteKey=
+JpegCompression=False
+JpegCompressionFilesize=1000
+JpegCompressionRate=75

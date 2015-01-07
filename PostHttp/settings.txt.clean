@@ -1,0 +1,12 @@
+Format=PNG
+EndpointURL=
+EndpointName=
+EndpointAuthorization=
+EndpointURLInfo=http://clipupload.net/
+ShortcutDragModifiers=
+ShortcutDragKey=
+ShortcutPasteModifiers=
+ShortcutPasteKey=
+JpegCompression=False
+JpegCompressionFilesize=1000
+JpegCompressionRate=75

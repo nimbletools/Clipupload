@@ -15,6 +15,7 @@ using System.Net;
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.Net.Sockets;
+using Nimble.JSON;
 
 namespace ClipUpload4
 {
@@ -172,16 +173,20 @@ namespace ClipUpload4
         try {
           WebClient wc = new WebClient();
           wc.Proxy = GetProxy();
-          string latestVersion = wc.DownloadString("http://clipupload.net/?update4");
-          if (latestVersion != Version) {
-            int iLatestMinor = int.Parse(latestVersion.Split('.').Last());
+          string strResult = wc.DownloadString("https://nimble.tools/ping/update?product=2&cptversion=0");
+          dynamic res = Json.JsonDecode(strResult);
+          if (res["status"] != "OK") {
+            throw new Exception();
+          }
+          if (res["version"] != Version) {
+            int iLatestMinor = int.Parse(res["version"].Split('.').Last());
             int iMinor = int.Parse(Version.Split('.').Last());
             if (iLatestMinor > iMinor) {
               this.Text += " (outdated)";
-              this.Tray.ShowBalloonTip(5, "ClipUpload Update", "A new update for ClipUpload is available, version " + latestVersion + ". Visit ClipUpload.net to get the new version.", ToolTipIcon.Info);
+              this.Tray.ShowBalloonTip(5, "ClipUpload Update", "A new update for ClipUpload is available, version " + res["version"] + ". Visit https://nimble.tools/clipupload to get the new version.", ToolTipIcon.Info);
             } else {
               this.Text += " (pre-release)";
-              this.Tray.ShowBalloonTip(5, "ClipUpload Pre-release", "You are running on a pre-release version of ClipUpload, version " + Version + ". The latest stable version is " + latestVersion + ". Please report all bugs.", ToolTipIcon.Warning);
+              this.Tray.ShowBalloonTip(5, "ClipUpload Pre-release", "You are running on a pre-release version of ClipUpload, version " + Version + ". The latest stable version is " + res["version"] + ". Please report all bugs.", ToolTipIcon.Warning);
             }
           }
         } catch (Exception ex) {
@@ -189,8 +194,9 @@ namespace ClipUpload4
         }
       }
 
-      if (curDir != Directory.GetCurrentDirectory())
+      if (curDir != Directory.GetCurrentDirectory()) {
         mustHide = true;
+      }
 
       keyboardHandler = new KeyEventHandler(keyboardListener_KeyDown);
 

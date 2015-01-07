@@ -1,0 +1,17 @@
+Server=
+Port=22
+Username=
+Password=
+Path=
+Http=
+Format=PNG
+UseMD5=False
+ShortMD5=False
+Length=8
+JpegCompression=False
+JpegCompressionFilesize=1000
+JpegCompressionRate=75
+ShortcutDragModifiers=
+ShortcutDragKey=
+ShortcutPasteModifiers=
+ShortcutPasteKey=
