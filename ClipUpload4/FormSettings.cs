@@ -219,7 +219,7 @@ namespace ClipUpload4
       Process.Start(new ProcessStartInfo() {
         FileName = "srm.exe",
         Verb = "runas",
-        Arguments = "install ClipUploadShellExtension.dll -codebase"  
+        Arguments = "install ClipUploadShellExtension.dll -codebase"
       });
     }
   }
