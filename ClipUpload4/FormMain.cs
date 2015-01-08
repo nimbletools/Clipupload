@@ -524,7 +524,7 @@ namespace ClipUpload4
           });
         }
 
-        if (addon.Info.URL != "") {
+        if (addon.Info.URL != null) {
           tsi = cms.Items.Add("Website");
           tsi.Image = this.iconList.Images[7];
           tsi.Click += new EventHandler(delegate
@@ -533,7 +533,7 @@ namespace ClipUpload4
           });
         }
 
-        if (addon.Info.URL_Author != "") {
+        if (addon.Info.URL_Author != null) {
           tsi = cms.Items.Add("Author's website");
           tsi.Image = this.iconList.Images[8];
           tsi.Click += new EventHandler(delegate
