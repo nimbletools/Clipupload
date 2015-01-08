@@ -140,7 +140,7 @@
   <ItemGroup>
     <None Include="Key.snk" />
     <None Include="settings.txt.clean">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
