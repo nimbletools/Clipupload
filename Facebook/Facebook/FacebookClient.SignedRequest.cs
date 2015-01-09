@@ -88,23 +88,35 @@ namespace Facebook
                 throw new InvalidOperationException(InvalidSignedRequest);
             }
 
-            string encodedignature = split[0];
+            string encodedSignature = split[0];
             string encodedEnvelope = split[1];
 
-            if (string.IsNullOrEmpty(encodedignature) || string.IsNullOrEmpty(encodedEnvelope))
+            if (string.IsNullOrEmpty(encodedSignature) || string.IsNullOrEmpty(encodedEnvelope))
                 throw new InvalidOperationException(InvalidSignedRequest);
 
             var base64UrlDecoded = Base64UrlDecode(encodedEnvelope);
-            var envelope = (IDictionary<string, object>)DeserializeJson(Encoding.UTF8.GetString(base64UrlDecoded, 0, base64UrlDecoded.Length), null);
-            var algorithm = (string)envelope["algorithm"];
-            if (!algorithm.Equals("HMAC-SHA256"))
-                throw new InvalidOperationException("Unknown algorithm. Expected HMAC-SHA256");
+            var envelope = DeserializeJson(Encoding.UTF8.GetString(base64UrlDecoded, 0, base64UrlDecoded.Length), null);
 
             byte[] key = Encoding.UTF8.GetBytes(appSecret);
-            IEnumerable<byte> digest = ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
+            byte[] digest = ComputeHmacSha256Hash(Encoding.UTF8.GetBytes(encodedEnvelope), key);
 
-            if (!digest.SequenceEqual(Base64UrlDecode(encodedignature)))
+            var decodedSignature = Base64UrlDecode(encodedSignature);
+            if (digest.Length != decodedSignature.Length) 
+            {
                 throw new InvalidOperationException(InvalidSignedRequest);
+            }
+
+            bool result = true;
+            for (int i = 0; i < digest.Length; i++) 
+            {
+                result = result & (digest[i] == decodedSignature[i]);
+            }
+
+            if (!result) 
+            {
+                throw new InvalidOperationException(InvalidSignedRequest);
+            }
+                
             return envelope;
         }
 
@@ -152,12 +164,13 @@ namespace Facebook
         /// <returns>
         /// The Hmac Sha 256 hash.
         /// </returns>
-        private static IEnumerable<byte> ComputeHmacSha256Hash(byte[] data, byte[] key)
+        private static byte[] ComputeHmacSha256Hash(byte[] data, byte[] key)
         {
             using (var crypto = new HMACSHA256(key))
             {
                 return crypto.ComputeHash(data);
             }
         }
+
     }
 }

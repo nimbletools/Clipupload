@@ -115,6 +115,9 @@ namespace Facebook
         private bool _isSecureConnection;
         private bool _useFacebookBeta;
 
+        private string _version;
+        private static string _defaultVersion;
+
         private Func<object, string> _serializeJson;
         private static Func<object, string> _defaultJsonSerializer;
 
@@ -173,8 +176,28 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Get or sets the graph api version to use.
+        /// </summary>
+        public virtual string Version
+        {
+            get { return _version; }
+            set { _version = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the default graph api version to use when initializing a new instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        public static string DefaultVersion
+        {
+            get { return _defaultVersion; }
+            set { _defaultVersion = value; }
+        }
+
+        /// <summary>
         /// Serialize object to json.
         /// </summary>
+        //[Obsolete("Use SetJsonSerializers")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<object, string> SerializeJson
         {
             get { return _serializeJson ?? (_serializeJson = _defaultJsonSerializer); }
@@ -184,6 +207,8 @@ namespace Facebook
         /// <summary>
         /// Deserialize json to object.
         /// </summary>
+        //[Obsolete("Use SetJsonSerializers")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual Func<string, Type, object> DeserializeJson
         {
             get { return _deserializeJson; }
@@ -194,6 +219,7 @@ namespace Facebook
         /// Http web request factory.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        //[Obsolete("Use SetHttpWebRequestFactory.")]
         public virtual Func<Uri, HttpWebRequestWrapper> HttpWebRequestFactory
         {
             get { return _httpWebRequestFactory; }
@@ -213,6 +239,7 @@ namespace Facebook
         /// </summary>
         public FacebookClient()
         {
+            _version = _defaultVersion;
             _deserializeJson = _defaultJsonDeserializer;
             _httpWebRequestFactory = _defaultHttpWebRequestFactory;
         }
@@ -235,7 +262,7 @@ namespace Facebook
         /// Sets the default json seriazliers and deserializers.
         /// </summary>
         /// <param name="jsonSerializer">Json serializer</param>
-        /// <param name="jsonDeserializer">Jsonn deserializer</param>
+        /// <param name="jsonDeserializer">Json deserializer</param>
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
         public static void SetDefaultJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
         {
@@ -244,13 +271,33 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Sets the json seriazliers and deserializers for the current instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        /// <param name="jsonSerializer">Json serializer</param>
+        /// <param name="jsonDeserializer">Json deserializer</param>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        public virtual void SetJsonSerializers(Func<object, string> jsonSerializer, Func<string, Type, object> jsonDeserializer)
+        {
+            SerializeJson = jsonSerializer;
+            DeserializeJson = jsonDeserializer;
+        }
+
+        /// <summary>
         /// Sets the default http web request factory.
         /// </summary>
         /// <param name="httpWebRequestFactory"></param>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void SetDefaultHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
         {
             _defaultHttpWebRequestFactory = httpWebRequestFactory;
+        }
+
+        /// <summary>
+        /// Sets the http web request factory for the current instance of <see cref="FacebookClient"/>.
+        /// </summary>
+        /// <param name="httpWebRequestFactory"></param>
+        public virtual void SetHttpWebRequestFactory(Func<Uri, HttpWebRequestWrapper> httpWebRequestFactory)
+        {
+            HttpWebRequestFactory = httpWebRequestFactory;
         }
 
         [SuppressMessage("Microsoft.Naming", "CA2204:LiteralsShouldBeSpelledCorrectly")]
@@ -281,8 +328,9 @@ namespace Facebook
             }
 
             Uri uri;
-            bool isLegacyRestApi = false;
-            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri, out isLegacyRestApi);
+            bool isLegacyRestApi;
+            bool isAbsolutePath;
+            path = ParseUrlQueryString(path, parametersWithoutMediaObjects, false, out uri, out isLegacyRestApi, out isAbsolutePath);
 
             if (parametersWithoutMediaObjects.ContainsKey("format"))
                 parametersWithoutMediaObjects["format"] = "json-strings";
@@ -389,7 +437,14 @@ namespace Facebook
                 uriBuilder = new UriBuilder { Host = uri.Host, Scheme = uri.Scheme };
             }
 
-            uriBuilder.Path = path;
+            if (isAbsolutePath || string.IsNullOrEmpty(Version))
+            {
+                uriBuilder.Path = path;
+            }
+            else
+            {
+                uriBuilder.Path = Version + "/" + path;
+            }
 
             string contentType = null;
             long? contentLength = null;
@@ -574,6 +629,7 @@ namespace Facebook
             {
                 object result = null;
 
+                Exception exception = null;
                 if (httpHelper == null)
                 {
                     // batch row
@@ -589,7 +645,13 @@ namespace Facebook
                     if (response.ContentType.Contains("text/javascript") ||
                         response.ContentType.Contains("application/json"))
                     {
-                        result = DeserializeJson(responseString, resultType);
+                        result = DeserializeJson(responseString, null);
+                        exception = GetException(httpHelper, result);
+                        if (exception == null)
+                        {
+                            if (resultType != null)
+                                result = DeserializeJson(responseString, resultType);
+                        }
                     }
                     else if (response.StatusCode == HttpStatusCode.OK && response.ContentType.Contains("text/plain"))
                     {
@@ -606,7 +668,7 @@ namespace Facebook
                             if (body.ContainsKey("expires"))
                                 body["expires"] = Convert.ToInt64(body["expires"], CultureInfo.InvariantCulture);
 
-                            result = resultType == null ? body : DeserializeJson(body.ToString(), resultType);
+                            result = DeserializeJson(body.ToString(), resultType);
 
                             return result;
                         }
@@ -621,7 +683,6 @@ namespace Facebook
                     }
                 }
 
-                var exception = GetException(httpHelper, result);
                 if (exception == null)
                 {
                     if (containsEtag && httpHelper != null)
@@ -730,17 +791,21 @@ namespace Facebook
                     if (error.ContainsKey("code"))
                         int.TryParse(error["code"].ToString(), out errorCode);
 
+                    var errorSubcode = 0;
+                    if (error.ContainsKey("error_subcode"))
+                        int.TryParse(error["error_subcode"].ToString(), out errorSubcode);
+
                     // Check to make sure the correct data is in the response
                     if (!string.IsNullOrEmpty(errorType) && !string.IsNullOrEmpty(errorMessage))
                     {
                         // We don't include the inner exception because it is not needed and is always a WebException.
                         // It is easier to understand the error if we use Facebook's error message.
                         if (errorType == "OAuthException")
-                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode);
+                            resultException = new FacebookOAuthException(errorMessage, errorType, errorCode, errorSubcode);
                         else if (errorType == "API_EC_TOO_MANY_CALLS" || (errorMessage.Contains("request limit reached")))
                             resultException = new FacebookApiLimitException(errorMessage, errorType);
                         else
-                            resultException = new FacebookApiException(errorMessage, errorType, errorCode);
+                            resultException = new FacebookApiException(errorMessage, errorType, errorCode, errorSubcode);
                     }
                 }
                 else
@@ -888,15 +953,17 @@ namespace Facebook
             return sb.ToString();
         }
 
-        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri, out bool isLegacyRestApi)
+        private static string ParseUrlQueryString(string path, IDictionary<string, object> parameters, bool forceParseAllUrls, out Uri uri, out bool isLegacyRestApi, out bool isAbsolutePath)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
 
             isLegacyRestApi = false;
+            isAbsolutePath = false;
             uri = null;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
+                isAbsolutePath = true;
                 if (forceParseAllUrls)
                 {
                     path = string.Concat(uri.AbsolutePath, uri.Query);
@@ -962,6 +1029,13 @@ namespace Facebook
                     if (!string.IsNullOrEmpty(kvp))
                     {
                         var qsPart = kvp.Split('=');
+                        if (qsPart.Length < 2)
+                        {
+                            // Issue #287. In some cases, facebook returns a URL with a query parameter that
+                            // has no value. In such cases, better to ignore and continue than throw an exception
+                            continue;
+                        }
+
                         if (qsPart.Length == 2 && !string.IsNullOrEmpty(qsPart[0]))
                         {
                             var key = HttpHelper.UrlDecode(qsPart[0]);
@@ -985,7 +1059,8 @@ namespace Facebook
         {
             Uri uri;
             bool isLegacyRestApi;
-            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri, out isLegacyRestApi);
+            bool isAbsolutePath;
+            return ParseUrlQueryString(path, parameters, forceParseAllUrls, out uri, out isLegacyRestApi, out isAbsolutePath);
         }
     }
 }

@@ -53,49 +53,29 @@
     <Compile Include="Facebook\DateTimeConvertor.cs" />
     <Compile Include="Facebook\FacebookApiEventArgs.cs" />
     <Compile Include="Facebook\FacebookApiException.cs" />
-    <Compile Include="Facebook\FacebookApiLimitException.cs">
-      <DependentUpon>FacebookApiException.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookOAuthException.cs">
-      <DependentUpon>FacebookApiException.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Facebook\FacebookApiLimitException.cs" />
     <Compile Include="Facebook\FacebookBatchParameter.cs" />
+    <Compile Include="Facebook\FacebookClient.Async.cs" />
+    <Compile Include="Facebook\FacebookClient.Async.Tasks.cs" />
+    <Compile Include="Facebook\FacebookClient.Batch.Async.cs" />
+    <Compile Include="Facebook\FacebookClient.Batch.Async.Tasks.cs" />
+    <Compile Include="Facebook\FacebookClient.Batch.Sync.cs" />
     <Compile Include="Facebook\FacebookClient.cs" />
-    <Compile Include="Facebook\FacebookClient.Async.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookClient.Async.Tasks.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookClient.Batch.Async.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookClient.Batch.Async.Tasks.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookClient.Batch.Sync.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookClient.OAuthResult.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookClient.SignedRequest.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Facebook\FacebookClient.Sync.cs">
-      <DependentUpon>FacebookClient.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Facebook\FacebookClient.OAuthResult.cs" />
+    <Compile Include="Facebook\FacebookClient.SignedRequest.cs" />
+    <Compile Include="Facebook\FacebookClient.Subscription.cs" />
+    <Compile Include="Facebook\FacebookClient.Sync.cs" />
     <Compile Include="Facebook\FacebookMediaObject.cs" />
     <Compile Include="Facebook\FacebookMediaStream.cs" />
+    <Compile Include="Facebook\FacebookOAuthException.cs" />
     <Compile Include="Facebook\FacebookOAuthResult.cs" />
-    <Compile Include="Facebook\FacebookUploadProgressChangedEventArgs.cs">
-      <DependentUpon>FacebookApiEventArgs.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Facebook\FacebookUploadProgressChangedEventArgs.cs" />
     <Compile Include="Facebook\GlobalSuppressions.cs" />
     <Compile Include="Facebook\HttpHelper.cs" />
     <Compile Include="Facebook\HttpMethod.cs" />
     <Compile Include="Facebook\HttpWebRequestCreatedEventArgs.cs" />
     <Compile Include="Facebook\SimpleJson.cs" />
+    <Compile Include="Facebook\TaskExtensions.cs" />
     <Compile Include="FormAuthenticate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +106,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Facebook\Facebook-WindowsStore.csproj" />
     <Content Include="Icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -135,6 +116,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
