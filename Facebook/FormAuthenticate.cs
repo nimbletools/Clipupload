@@ -21,12 +21,12 @@ namespace Facebook
       this.web.Navigate(url);
     }
 
-    private void timerWait_Tick(object sender, EventArgs e)
+    private void web_Navigating(object sender, WebBrowserNavigatingEventArgs e)
     {
-      if (this.web.Url == null) return;
-
-      string url = this.web.Url.AbsoluteUri;
-      if (url.Contains("/login_success.html#access")) {
+      string url = e.Url.AbsoluteUri;
+      if (url.Contains("/login_success.html?error=")) {
+        this.Close();
+      } else if (url.Contains("/login_success.html#access")) {
         try {
           this.Hide();
 
@@ -36,7 +36,6 @@ namespace Facebook
 
           // TODO: Use expires_in to shedule a re-authenticate when it's required
 
-          this.timerWait.Enabled = false;
           this.Close();
         } catch { }
       }

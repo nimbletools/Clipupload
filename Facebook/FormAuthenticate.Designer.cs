@@ -23,10 +23,8 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-      this.components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAuthenticate));
       this.web = new System.Windows.Forms.WebBrowser();
-      this.timerWait = new System.Windows.Forms.Timer(this.components);
       this.SuspendLayout();
       // 
       // web
@@ -35,20 +33,15 @@
       this.web.Location = new System.Drawing.Point(0, 0);
       this.web.MinimumSize = new System.Drawing.Size(20, 20);
       this.web.Name = "web";
-      this.web.Size = new System.Drawing.Size(535, 547);
+      this.web.Size = new System.Drawing.Size(537, 520);
       this.web.TabIndex = 0;
-      // 
-      // timerWait
-      // 
-      this.timerWait.Enabled = true;
-      this.timerWait.Interval = 1000;
-      this.timerWait.Tick += new System.EventHandler(this.timerWait_Tick);
+      this.web.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.web_Navigating);
       // 
       // FormAuthenticate
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(535, 547);
+      this.ClientSize = new System.Drawing.Size(537, 520);
       this.Controls.Add(this.web);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -64,6 +57,5 @@
         #endregion
 
         private System.Windows.Forms.WebBrowser web;
-        private System.Windows.Forms.Timer timerWait;
     }
 }
