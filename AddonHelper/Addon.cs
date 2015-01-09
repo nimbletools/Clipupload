@@ -50,6 +50,10 @@ namespace AddonHelper
     public bool IsAnimateItem = false;
     public bool ShowShortInfo = true;
 
+    public bool IsAndroid = false;
+    public bool IsAndroidScreenshotItem = false;
+    public bool IsAndroidVideoItem = false;
+
     public bool Visible = true;
 
     public string Text = "";

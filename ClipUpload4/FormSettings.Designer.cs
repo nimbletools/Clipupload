@@ -45,6 +45,7 @@
       this.checkUseProxy = new System.Windows.Forms.CheckBox();
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.tabPage1 = new System.Windows.Forms.TabPage();
+      this.button7 = new System.Windows.Forms.Button();
       this.groupBox6 = new System.Windows.Forms.GroupBox();
       this.checkRandomFilenameCase = new System.Windows.Forms.CheckBox();
       this.checkRandomFilenameSuffixDate = new System.Windows.Forms.CheckBox();
@@ -99,7 +100,18 @@
       this.checkShowShortHistory = new System.Windows.Forms.CheckBox();
       this.checkShowDragAnimation = new System.Windows.Forms.CheckBox();
       this.checkShowDragScreenshot = new System.Windows.Forms.CheckBox();
-      this.button7 = new System.Windows.Forms.Button();
+      this.tabPage6 = new System.Windows.Forms.TabPage();
+      this.label22 = new System.Windows.Forms.Label();
+      this.label21 = new System.Windows.Forms.Label();
+      this.textAndroidTempPath = new System.Windows.Forms.TextBox();
+      this.label20 = new System.Windows.Forms.Label();
+      this.label19 = new System.Windows.Forms.Label();
+      this.numAndroidVideoBitrate = new System.Windows.Forms.NumericUpDown();
+      this.label18 = new System.Windows.Forms.Label();
+      this.checkAndroidVideo = new System.Windows.Forms.CheckBox();
+      this.checkAndroidScreenshot = new System.Windows.Forms.CheckBox();
+      this.label17 = new System.Windows.Forms.Label();
+      this.checkAndroid = new System.Windows.Forms.CheckBox();
       ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).BeginInit();
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
@@ -119,6 +131,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.numWatermarkFontSize)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numWatermarkTransparancy)).BeginInit();
       this.tabPage5.SuspendLayout();
+      this.tabPage6.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.numAndroidVideoBitrate)).BeginInit();
       this.SuspendLayout();
       // 
       // button1
@@ -148,7 +162,7 @@
       this.checkUpdates.AutoSize = true;
       this.checkUpdates.Location = new System.Drawing.Point(6, 98);
       this.checkUpdates.Name = "checkUpdates";
-      this.checkUpdates.Size = new System.Drawing.Size(162, 17);
+      this.checkUpdates.Size = new System.Drawing.Size(163, 17);
       this.checkUpdates.TabIndex = 4;
       this.checkUpdates.Text = "Check for updates on startup";
       this.checkUpdates.UseVisualStyleBackColor = true;
@@ -158,7 +172,7 @@
       this.checkPortableProgressbar.AutoSize = true;
       this.checkPortableProgressbar.Location = new System.Drawing.Point(6, 75);
       this.checkPortableProgressbar.Name = "checkPortableProgressbar";
-      this.checkPortableProgressbar.Size = new System.Drawing.Size(122, 17);
+      this.checkPortableProgressbar.Size = new System.Drawing.Size(123, 17);
       this.checkPortableProgressbar.TabIndex = 3;
       this.checkPortableProgressbar.Text = "Portable progressbar";
       this.checkPortableProgressbar.UseVisualStyleBackColor = true;
@@ -168,7 +182,7 @@
       this.checkProgressBar.AutoSize = true;
       this.checkProgressBar.Location = new System.Drawing.Point(6, 52);
       this.checkProgressBar.Name = "checkProgressBar";
-      this.checkProgressBar.Size = new System.Drawing.Size(110, 17);
+      this.checkProgressBar.Size = new System.Drawing.Size(111, 17);
       this.checkProgressBar.TabIndex = 2;
       this.checkProgressBar.Text = "Show progressbar";
       this.checkProgressBar.UseVisualStyleBackColor = true;
@@ -178,7 +192,7 @@
       this.checkHideDonate.AutoSize = true;
       this.checkHideDonate.Location = new System.Drawing.Point(6, 29);
       this.checkHideDonate.Name = "checkHideDonate";
-      this.checkHideDonate.Size = new System.Drawing.Size(136, 17);
+      this.checkHideDonate.Size = new System.Drawing.Size(137, 17);
       this.checkHideDonate.TabIndex = 1;
       this.checkHideDonate.Text = "Hide the Donate button";
       this.checkHideDonate.UseVisualStyleBackColor = true;
@@ -188,7 +202,7 @@
       this.checkAutostart.AutoSize = true;
       this.checkAutostart.Location = new System.Drawing.Point(6, 6);
       this.checkAutostart.Name = "checkAutostart";
-      this.checkAutostart.Size = new System.Drawing.Size(116, 17);
+      this.checkAutostart.Size = new System.Drawing.Size(117, 17);
       this.checkAutostart.TabIndex = 0;
       this.checkAutostart.Text = "Start with Windows";
       this.checkAutostart.UseVisualStyleBackColor = true;
@@ -208,7 +222,7 @@
             0});
       this.numProxyPort.Name = "numProxyPort";
       this.numProxyPort.Size = new System.Drawing.Size(78, 20);
-      this.numProxyPort.TabIndex = 4;
+      this.numProxyPort.TabIndex = 2;
       this.numProxyPort.Value = new decimal(new int[] {
             8080,
             0,
@@ -220,7 +234,7 @@
       this.textProxyPassword.Location = new System.Drawing.Point(70, 81);
       this.textProxyPassword.Name = "textProxyPassword";
       this.textProxyPassword.Size = new System.Drawing.Size(283, 20);
-      this.textProxyPassword.TabIndex = 3;
+      this.textProxyPassword.TabIndex = 4;
       this.textProxyPassword.UseSystemPasswordChar = true;
       // 
       // label3
@@ -269,7 +283,7 @@
       this.checkUseProxy.AutoSize = true;
       this.checkUseProxy.Location = new System.Drawing.Point(6, 6);
       this.checkUseProxy.Name = "checkUseProxy";
-      this.checkUseProxy.Size = new System.Drawing.Size(58, 17);
+      this.checkUseProxy.Size = new System.Drawing.Size(59, 17);
       this.checkUseProxy.TabIndex = 0;
       this.checkUseProxy.Text = "Enable";
       this.checkUseProxy.UseVisualStyleBackColor = true;
@@ -284,6 +298,7 @@
       this.tabControl1.Controls.Add(this.tabPage3);
       this.tabControl1.Controls.Add(this.tabPage4);
       this.tabControl1.Controls.Add(this.tabPage5);
+      this.tabControl1.Controls.Add(this.tabPage6);
       this.tabControl1.Location = new System.Drawing.Point(12, 12);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
@@ -308,6 +323,16 @@
       this.tabPage1.Text = "General";
       this.tabPage1.UseVisualStyleBackColor = true;
       // 
+      // button7
+      // 
+      this.button7.Location = new System.Drawing.Point(6, 365);
+      this.button7.Name = "button7";
+      this.button7.Size = new System.Drawing.Size(149, 23);
+      this.button7.TabIndex = 7;
+      this.button7.Text = "Register shell extension";
+      this.button7.UseVisualStyleBackColor = true;
+      this.button7.Click += new System.EventHandler(this.button7_Click);
+      // 
       // groupBox6
       // 
       this.groupBox6.Controls.Add(this.checkRandomFilenameCase);
@@ -324,7 +349,7 @@
       this.checkRandomFilenameCase.AutoSize = true;
       this.checkRandomFilenameCase.Location = new System.Drawing.Point(6, 42);
       this.checkRandomFilenameCase.Name = "checkRandomFilenameCase";
-      this.checkRandomFilenameCase.Size = new System.Drawing.Size(171, 17);
+      this.checkRandomFilenameCase.Size = new System.Drawing.Size(172, 17);
       this.checkRandomFilenameCase.TabIndex = 1;
       this.checkRandomFilenameCase.Text = "Random uppercase characters";
       this.checkRandomFilenameCase.UseVisualStyleBackColor = true;
@@ -334,7 +359,7 @@
       this.checkRandomFilenameSuffixDate.AutoSize = true;
       this.checkRandomFilenameSuffixDate.Location = new System.Drawing.Point(6, 19);
       this.checkRandomFilenameSuffixDate.Name = "checkRandomFilenameSuffixDate";
-      this.checkRandomFilenameSuffixDate.Size = new System.Drawing.Size(224, 17);
+      this.checkRandomFilenameSuffixDate.Size = new System.Drawing.Size(225, 17);
       this.checkRandomFilenameSuffixDate.TabIndex = 0;
       this.checkRandomFilenameSuffixDate.Text = "Suffix with current date (yyyyMMdd format)";
       this.checkRandomFilenameSuffixDate.UseVisualStyleBackColor = true;
@@ -401,7 +426,7 @@
       this.checkBackupsEnable.AutoSize = true;
       this.checkBackupsEnable.Location = new System.Drawing.Point(6, 19);
       this.checkBackupsEnable.Name = "checkBackupsEnable";
-      this.checkBackupsEnable.Size = new System.Drawing.Size(64, 17);
+      this.checkBackupsEnable.Size = new System.Drawing.Size(65, 17);
       this.checkBackupsEnable.TabIndex = 0;
       this.checkBackupsEnable.Text = "Enabled";
       this.checkBackupsEnable.UseVisualStyleBackColor = true;
@@ -458,7 +483,7 @@
       this.radioEditorBuiltin.AutoSize = true;
       this.radioEditorBuiltin.Location = new System.Drawing.Point(6, 19);
       this.radioEditorBuiltin.Name = "radioEditorBuiltin";
-      this.radioEditorBuiltin.Size = new System.Drawing.Size(84, 17);
+      this.radioEditorBuiltin.Size = new System.Drawing.Size(85, 17);
       this.radioEditorBuiltin.TabIndex = 5;
       this.radioEditorBuiltin.TabStop = true;
       this.radioEditorBuiltin.Text = "Built-in editor";
@@ -469,7 +494,7 @@
       this.radioEditorProcess.AutoSize = true;
       this.radioEditorProcess.Location = new System.Drawing.Point(6, 42);
       this.radioEditorProcess.Name = "radioEditorProcess";
-      this.radioEditorProcess.Size = new System.Drawing.Size(93, 17);
+      this.radioEditorProcess.Size = new System.Drawing.Size(94, 17);
       this.radioEditorProcess.TabIndex = 6;
       this.radioEditorProcess.TabStop = true;
       this.radioEditorProcess.Text = "Run a process";
@@ -544,7 +569,7 @@
       this.checkAnimAutoStart.AutoSize = true;
       this.checkAnimAutoStart.Location = new System.Drawing.Point(69, 45);
       this.checkAnimAutoStart.Name = "checkAnimAutoStart";
-      this.checkAnimAutoStart.Size = new System.Drawing.Size(67, 17);
+      this.checkAnimAutoStart.Size = new System.Drawing.Size(68, 17);
       this.checkAnimAutoStart.TabIndex = 2;
       this.checkAnimAutoStart.Text = "Autostart";
       this.checkAnimAutoStart.UseVisualStyleBackColor = true;
@@ -653,7 +678,7 @@
       this.checkResize.AutoSize = true;
       this.checkResize.Location = new System.Drawing.Point(6, 19);
       this.checkResize.Name = "checkResize";
-      this.checkResize.Size = new System.Drawing.Size(58, 17);
+      this.checkResize.Size = new System.Drawing.Size(59, 17);
       this.checkResize.TabIndex = 0;
       this.checkResize.Text = "Enable";
       this.checkResize.UseVisualStyleBackColor = true;
@@ -748,7 +773,7 @@
       this.checkWatermarkFontBold.AutoSize = true;
       this.checkWatermarkFontBold.Location = new System.Drawing.Point(84, 125);
       this.checkWatermarkFontBold.Name = "checkWatermarkFontBold";
-      this.checkWatermarkFontBold.Size = new System.Drawing.Size(67, 17);
+      this.checkWatermarkFontBold.Size = new System.Drawing.Size(68, 17);
       this.checkWatermarkFontBold.TabIndex = 7;
       this.checkWatermarkFontBold.Text = "Bold font";
       this.checkWatermarkFontBold.UseVisualStyleBackColor = true;
@@ -818,7 +843,7 @@
       this.checkWatermark.AutoSize = true;
       this.checkWatermark.Location = new System.Drawing.Point(7, 20);
       this.checkWatermark.Name = "checkWatermark";
-      this.checkWatermark.Size = new System.Drawing.Size(58, 17);
+      this.checkWatermark.Size = new System.Drawing.Size(59, 17);
       this.checkWatermark.TabIndex = 0;
       this.checkWatermark.Text = "Enable";
       this.checkWatermark.UseVisualStyleBackColor = true;
@@ -853,8 +878,8 @@
       this.checkShowShortInfo.AutoSize = true;
       this.checkShowShortInfo.Location = new System.Drawing.Point(6, 98);
       this.checkShowShortInfo.Name = "checkShowShortInfo";
-      this.checkShowShortInfo.Size = new System.Drawing.Size(98, 17);
-      this.checkShowShortInfo.TabIndex = 3;
+      this.checkShowShortInfo.Size = new System.Drawing.Size(99, 17);
+      this.checkShowShortInfo.TabIndex = 4;
       this.checkShowShortInfo.Text = "Show short info";
       this.checkShowShortInfo.UseVisualStyleBackColor = true;
       // 
@@ -865,8 +890,8 @@
       this.checkShowSeparators.CheckState = System.Windows.Forms.CheckState.Checked;
       this.checkShowSeparators.Location = new System.Drawing.Point(6, 75);
       this.checkShowSeparators.Name = "checkShowSeparators";
-      this.checkShowSeparators.Size = new System.Drawing.Size(227, 17);
-      this.checkShowSeparators.TabIndex = 2;
+      this.checkShowSeparators.Size = new System.Drawing.Size(228, 17);
+      this.checkShowSeparators.TabIndex = 3;
       this.checkShowSeparators.Text = "Show separators between different addons";
       this.checkShowSeparators.UseVisualStyleBackColor = true;
       // 
@@ -877,8 +902,8 @@
       this.checkShowShortHistory.CheckState = System.Windows.Forms.CheckState.Checked;
       this.checkShowShortHistory.Location = new System.Drawing.Point(6, 52);
       this.checkShowShortHistory.Name = "checkShowShortHistory";
-      this.checkShowShortHistory.Size = new System.Drawing.Size(146, 17);
-      this.checkShowShortHistory.TabIndex = 1;
+      this.checkShowShortHistory.Size = new System.Drawing.Size(147, 17);
+      this.checkShowShortHistory.TabIndex = 2;
       this.checkShowShortHistory.Text = "Show short upload history";
       this.checkShowShortHistory.UseVisualStyleBackColor = true;
       // 
@@ -887,8 +912,8 @@
       this.checkShowDragAnimation.AutoSize = true;
       this.checkShowDragAnimation.Location = new System.Drawing.Point(6, 29);
       this.checkShowDragAnimation.Name = "checkShowDragAnimation";
-      this.checkShowDragAnimation.Size = new System.Drawing.Size(139, 17);
-      this.checkShowDragAnimation.TabIndex = 0;
+      this.checkShowDragAnimation.Size = new System.Drawing.Size(140, 17);
+      this.checkShowDragAnimation.TabIndex = 1;
       this.checkShowDragAnimation.Text = "Show \"Drag gif\" options";
       this.checkShowDragAnimation.UseVisualStyleBackColor = true;
       // 
@@ -899,20 +924,143 @@
       this.checkShowDragScreenshot.CheckState = System.Windows.Forms.CheckState.Checked;
       this.checkShowDragScreenshot.Location = new System.Drawing.Point(6, 6);
       this.checkShowDragScreenshot.Name = "checkShowDragScreenshot";
-      this.checkShowDragScreenshot.Size = new System.Drawing.Size(180, 17);
+      this.checkShowDragScreenshot.Size = new System.Drawing.Size(181, 17);
       this.checkShowDragScreenshot.TabIndex = 0;
       this.checkShowDragScreenshot.Text = "Show \"Drag screenshot\" options";
       this.checkShowDragScreenshot.UseVisualStyleBackColor = true;
       // 
-      // button7
+      // tabPage6
       // 
-      this.button7.Location = new System.Drawing.Point(6, 365);
-      this.button7.Name = "button7";
-      this.button7.Size = new System.Drawing.Size(149, 23);
-      this.button7.TabIndex = 7;
-      this.button7.Text = "Register shell extension";
-      this.button7.UseVisualStyleBackColor = true;
-      this.button7.Click += new System.EventHandler(this.button7_Click);
+      this.tabPage6.Controls.Add(this.checkAndroid);
+      this.tabPage6.Controls.Add(this.label22);
+      this.tabPage6.Controls.Add(this.label21);
+      this.tabPage6.Controls.Add(this.textAndroidTempPath);
+      this.tabPage6.Controls.Add(this.label20);
+      this.tabPage6.Controls.Add(this.label19);
+      this.tabPage6.Controls.Add(this.numAndroidVideoBitrate);
+      this.tabPage6.Controls.Add(this.label18);
+      this.tabPage6.Controls.Add(this.checkAndroidVideo);
+      this.tabPage6.Controls.Add(this.checkAndroidScreenshot);
+      this.tabPage6.Controls.Add(this.label17);
+      this.tabPage6.Location = new System.Drawing.Point(4, 22);
+      this.tabPage6.Name = "tabPage6";
+      this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage6.Size = new System.Drawing.Size(359, 394);
+      this.tabPage6.TabIndex = 5;
+      this.tabPage6.Text = "Android";
+      this.tabPage6.UseVisualStyleBackColor = true;
+      // 
+      // label22
+      // 
+      this.label22.AutoSize = true;
+      this.label22.Location = new System.Drawing.Point(6, 378);
+      this.label22.Name = "label22";
+      this.label22.Size = new System.Drawing.Size(288, 13);
+      this.label22.TabIndex = 8;
+      this.label22.Text = "Warning: This is an experimental advanced feature for now.";
+      // 
+      // label21
+      // 
+      this.label21.AutoSize = true;
+      this.label21.Location = new System.Drawing.Point(14, 216);
+      this.label21.Name = "label21";
+      this.label21.Size = new System.Drawing.Size(61, 13);
+      this.label21.TabIndex = 7;
+      this.label21.Text = "Temp path:";
+      // 
+      // textAndroidTempPath
+      // 
+      this.textAndroidTempPath.Location = new System.Drawing.Point(81, 213);
+      this.textAndroidTempPath.Name = "textAndroidTempPath";
+      this.textAndroidTempPath.Size = new System.Drawing.Size(272, 20);
+      this.textAndroidTempPath.TabIndex = 4;
+      this.textAndroidTempPath.Text = "/sdcard/";
+      // 
+      // label20
+      // 
+      this.label20.Location = new System.Drawing.Point(6, 180);
+      this.label20.Name = "label20";
+      this.label20.Size = new System.Drawing.Size(347, 30);
+      this.label20.TabIndex = 5;
+      this.label20.Text = "We need a temporary folder to store screenshots and videos on your device.";
+      // 
+      // label19
+      // 
+      this.label19.AutoSize = true;
+      this.label19.Location = new System.Drawing.Point(139, 145);
+      this.label19.Name = "label19";
+      this.label19.Size = new System.Drawing.Size(33, 13);
+      this.label19.TabIndex = 4;
+      this.label19.Text = "Mbps";
+      // 
+      // numAndroidVideoBitrate
+      // 
+      this.numAndroidVideoBitrate.Location = new System.Drawing.Point(81, 143);
+      this.numAndroidVideoBitrate.Maximum = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
+      this.numAndroidVideoBitrate.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      this.numAndroidVideoBitrate.Name = "numAndroidVideoBitrate";
+      this.numAndroidVideoBitrate.Size = new System.Drawing.Size(52, 20);
+      this.numAndroidVideoBitrate.TabIndex = 3;
+      this.numAndroidVideoBitrate.Value = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+      // 
+      // label18
+      // 
+      this.label18.AutoSize = true;
+      this.label18.Location = new System.Drawing.Point(6, 145);
+      this.label18.Name = "label18";
+      this.label18.Size = new System.Drawing.Size(69, 13);
+      this.label18.TabIndex = 2;
+      this.label18.Text = "Video bitrate:";
+      // 
+      // checkAndroidVideo
+      // 
+      this.checkAndroidVideo.AutoSize = true;
+      this.checkAndroidVideo.Location = new System.Drawing.Point(9, 120);
+      this.checkAndroidVideo.Name = "checkAndroidVideo";
+      this.checkAndroidVideo.Size = new System.Drawing.Size(182, 17);
+      this.checkAndroidVideo.TabIndex = 2;
+      this.checkAndroidVideo.Text = "Show Android video option (mp4)";
+      this.checkAndroidVideo.UseVisualStyleBackColor = true;
+      // 
+      // checkAndroidScreenshot
+      // 
+      this.checkAndroidScreenshot.AutoSize = true;
+      this.checkAndroidScreenshot.Location = new System.Drawing.Point(9, 97);
+      this.checkAndroidScreenshot.Name = "checkAndroidScreenshot";
+      this.checkAndroidScreenshot.Size = new System.Drawing.Size(179, 17);
+      this.checkAndroidScreenshot.TabIndex = 1;
+      this.checkAndroidScreenshot.Text = "Show Android screenshot option";
+      this.checkAndroidScreenshot.UseVisualStyleBackColor = true;
+      // 
+      // label17
+      // 
+      this.label17.Location = new System.Drawing.Point(6, 3);
+      this.label17.Name = "label17";
+      this.label17.Size = new System.Drawing.Size(347, 68);
+      this.label17.TabIndex = 0;
+      this.label17.Text = resources.GetString("label17.Text");
+      // 
+      // checkAndroid
+      // 
+      this.checkAndroid.AutoSize = true;
+      this.checkAndroid.Location = new System.Drawing.Point(9, 74);
+      this.checkAndroid.Name = "checkAndroid";
+      this.checkAndroid.Size = new System.Drawing.Size(204, 17);
+      this.checkAndroid.TabIndex = 0;
+      this.checkAndroid.Text = "Enable Android Debug Bridge support";
+      this.checkAndroid.UseVisualStyleBackColor = true;
       // 
       // FormSettings
       // 
@@ -957,6 +1105,9 @@
       ((System.ComponentModel.ISupportInitialize)(this.numWatermarkTransparancy)).EndInit();
       this.tabPage5.ResumeLayout(false);
       this.tabPage5.PerformLayout();
+      this.tabPage6.ResumeLayout(false);
+      this.tabPage6.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.numAndroidVideoBitrate)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -1035,5 +1186,17 @@
     private System.Windows.Forms.CheckBox checkShowSeparators;
     private System.Windows.Forms.CheckBox checkShowShortInfo;
     private System.Windows.Forms.Button button7;
+    private System.Windows.Forms.TabPage tabPage6;
+    private System.Windows.Forms.Label label17;
+    private System.Windows.Forms.CheckBox checkAndroidScreenshot;
+    private System.Windows.Forms.CheckBox checkAndroidVideo;
+    private System.Windows.Forms.Label label19;
+    private System.Windows.Forms.NumericUpDown numAndroidVideoBitrate;
+    private System.Windows.Forms.Label label18;
+    private System.Windows.Forms.Label label21;
+    private System.Windows.Forms.TextBox textAndroidTempPath;
+    private System.Windows.Forms.Label label20;
+    private System.Windows.Forms.Label label22;
+    private System.Windows.Forms.CheckBox checkAndroid;
   }
 }

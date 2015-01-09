@@ -16,6 +16,7 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using System.Net.Sockets;
 using Nimble.JSON;
+using ClipUpload4.Properties;
 
 namespace ClipUpload4
 {
@@ -57,6 +58,8 @@ namespace ClipUpload4
     public FormMain()
     {
       InitializeComponent();
+
+      AddonHelper.Android.AllOK();
     }
 
     public WebProxy GetProxy()
@@ -361,6 +364,9 @@ namespace ClipUpload4
 
       this.Version = this.settings.GetString("Version");
       this.panelDonate.Visible = this.settings.GetBool("DonateVisible");
+
+      AddonHelper.Android.Enabled = this.settings.GetBool("Android");
+      AddonHelper.Android.EnsureServer();
     }
 
     public void LoadShortcuts()
@@ -647,6 +653,14 @@ namespace ClipUpload4
           return false;
         }
         strText += " (Drag gif)";
+      } else if (entry.IsAndroidScreenshotItem) {
+        if (!this.settings.GetBool("AndroidScreenshots")) {
+          return false;
+        }
+      } else if (entry.IsAndroidVideoItem) {
+        if (!this.settings.GetBool("AndroidVideos")) {
+          return false;
+        }
       } else if (entry.ShowShortInfo && settings.GetBool("ShowShortInfo")) {
         string strShort = "";
 
@@ -676,7 +690,12 @@ namespace ClipUpload4
       }
 
       ToolStripMenuItem tsi = (ToolStripMenuItem)collection.Add(strText);
-      tsi.Image = entry.Image;
+
+      if (entry.IsAndroid) {
+        tsi.Image = Resources.AndroidIcon;
+      } else {
+        tsi.Image = entry.Image;
+      }
 
       if (entry.Action != null) {
         Action temp = entry.Action;

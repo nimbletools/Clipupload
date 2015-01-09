@@ -45,8 +45,10 @@ namespace AddonHelper
     {
       InitializeComponent();
 
-      if (settings.GetBool("PortableProgressBar")) {
-        this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+      if (settings != null) {
+        if (settings.GetBool("PortableProgressBar")) {
+          this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+        }
       }
 
       Rectangle workingArea = Screen.PrimaryScreen.WorkingArea;

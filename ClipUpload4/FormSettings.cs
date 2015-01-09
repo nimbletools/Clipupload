@@ -26,7 +26,7 @@ namespace ClipUpload4
 
       // check for old startup registry entry
       RegistryKey keyOld = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-      if(keyOld.GetValue("ClipUpload3") != null) {
+      if (keyOld.GetValue("ClipUpload3") != null) {
         keyOld.DeleteValue("ClipUpload3", false);
       }
 
@@ -86,6 +86,12 @@ namespace ClipUpload4
       checkShowShortHistory.Checked = mainClass.settings.GetBool("ShowShortHistory");
       checkShowSeparators.Checked = mainClass.settings.GetBool("ShowSeparators");
       checkShowShortInfo.Checked = mainClass.settings.GetBool("ShowShortInfo");
+
+      checkAndroid.Checked = mainClass.settings.GetBool("Android");
+      checkAndroidScreenshot.Checked = mainClass.settings.GetBool("AndroidScreenshots");
+      checkAndroidVideo.Checked = mainClass.settings.GetBool("AndroidVideos");
+      numAndroidVideoBitrate.Value = mainClass.settings.GetInt("AndroidVideoBitrate");
+      textAndroidTempPath.Text = mainClass.settings.GetString("AndroidTempPath");
     }
 
     private void button2_Click(object sender, EventArgs e)
@@ -139,6 +145,12 @@ namespace ClipUpload4
       mainClass.settings.SetBool("ShowShortHistory", checkShowShortHistory.Checked);
       mainClass.settings.SetBool("ShowSeparators", checkShowSeparators.Checked);
       mainClass.settings.SetBool("ShowShortInfo", checkShowShortInfo.Checked);
+
+      mainClass.settings.SetBool("Android", checkAndroid.Checked);
+      mainClass.settings.SetBool("AndroidScreenshots", checkAndroidScreenshot.Checked);
+      mainClass.settings.SetBool("AndroidVideos", checkAndroidVideo.Checked);
+      mainClass.settings.SetInt("AndroidVideoBitrate", (int)numAndroidVideoBitrate.Value);
+      mainClass.settings.SetString("AndroidTempPath", textAndroidTempPath.Text);
 
       mainClass.settings.Save();
 

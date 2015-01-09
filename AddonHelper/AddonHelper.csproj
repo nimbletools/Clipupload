@@ -56,6 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addon.cs" />
+    <Compile Include="Android.cs" />
+    <Compile Include="FormAndroidRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAndroidRecord.Designer.cs">
+      <DependentUpon>FormAndroidRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormFilename.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +126,9 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormAndroidRecord.resx">
+      <DependentUpon>FormAndroidRecord.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormFilename.resx">
       <DependentUpon>FormFilename.cs</DependentUpon>
     </EmbeddedResource>
