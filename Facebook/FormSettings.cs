@@ -93,8 +93,10 @@ namespace Facebook
       if (mainClass.facebookName != "") {
         this.labelAuthed.Text = "Authenticated as " + mainClass.facebookName + ".";
         this.button3.Text = "Deauthenticate";
-      } else
+      } else {
         this.labelAuthed.Text = "Not authenticated.";
+        this.button3.Text = "Authenticate";
+      }
     }
 
     private void button3_Click(object sender, EventArgs e)
@@ -104,7 +106,7 @@ namespace Facebook
         loginParams["client_id"] = "294548907266945";
         loginParams["redirect_uri"] = "https://" + "www.facebook.com/connect/login_success.html";
         loginParams["display"] = "popup";
-        loginParams["scope"] = "publish_stream";
+        loginParams["scope"] = "publish_actions";
         loginParams["response_type"] = "token";
 
         new FormAuthenticate(mainClass, mainClass.facebookClient.GetLoginUrl(loginParams).AbsoluteUri).ShowDialog();
