@@ -49,7 +49,10 @@ namespace Facebook
     {
       this.settings = new Settings(AddonPath + "/settings.txt");
 
-      this.facebookClient = new FacebookClient() { IsSecureConnection = true };
+      FacebookClient.DefaultVersion = "v2.1";
+      this.facebookClient = new FacebookClient() {
+        IsSecureConnection = true
+      };
 
       LoadSettings();
 
