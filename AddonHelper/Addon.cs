@@ -318,9 +318,12 @@ namespace AddonHelper
         }
       }
 
-      FieldInfo fiListener = form.GetType().GetField("keyboardListener");
-      PropertyInfo piEnabled = fiListener.FieldType.GetProperty("Enabled");
-      piEnabled.SetValue(fiListener.GetValue(form), enabled, null);
+      form.Invoke(new Action(delegate
+      {
+        FieldInfo fiListener = form.GetType().GetField("keyboardListener");
+        PropertyInfo piEnabled = fiListener.FieldType.GetProperty("Enabled");
+        piEnabled.SetValue(fiListener.GetValue(form), enabled, null);
+      }));
     }
 
     private string formatFilename(string origFilename)

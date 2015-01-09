@@ -32,9 +32,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpSSH, Version=2.0.1.25561, Culture=neutral, PublicKeyToken=ebad8a5963bb8e78, processorArchitecture=MSIL">
-      <HintPath>SharpSSH.dll</HintPath>
-    </Reference>
+    <Reference Include="Renci.SshNet, Version=2014.4.6.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -71,6 +69,7 @@
     <Content Include="Icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Renci.SshNet.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="settings.txt.clean">

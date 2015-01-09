@@ -10,7 +10,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Collections.Specialized;
 using AddonHelper;
-using Tamir.SharpSsh;
+using Renci.SshNet;
 using System.Threading;
 
 namespace SFTP
@@ -47,7 +47,8 @@ namespace SFTP
     private Bitmap bmpIcon;
     private Bitmap bmpIcon16;
 
-    private Sftp sshConnection;
+    private SftpClient sshConnection;
+    public Action<bool> connectionDoneCallback = null;
 
     public SFTP()
     {
@@ -78,9 +79,9 @@ namespace SFTP
     {
       if (sshConnection != null) {
         try {
-          sshConnection.Close();
-          sshConnection = null;
+          sshConnection.Disconnect();
         } catch { }
+        sshConnection = null;
       }
     }
 
@@ -123,21 +124,30 @@ namespace SFTP
     public void Connect()
     {
       if (sshConnection != null) {
-        if (sshConnection.Connected) {
-          sshConnection.Close();
+        if (sshConnection.IsConnected) {
+          try {
+            sshConnection.Disconnect();
+          } catch { }
         }
         sshConnection = null;
       }
+
       if (sshServer != "" && sshUsername != "" && sshPassword != "") {
-        sshConnection = new Sftp(sshServer, sshUsername, sshPassword);
+        sshConnection = new SftpClient(sshServer, sshPort, sshUsername, sshPassword);
         // connect in a different thread, we don't want to block the main thread
         new Thread(new ThreadStart(delegate
         {
+          bool ok = false;
           try {
-            sshConnection.Connect(sshPort);
+            sshConnection.Connect();
+            ok = true;
           } catch (Exception ex) {
             Tray.ShowBalloonTip(5000, "SFTP", "Failed to connect to SFTP server: \"" + (ex.InnerException != null ? ex.InnerException.Message : ex.Message) + "\"", ToolTipIcon.Error);
             sshConnection = null;
+          }
+          if (connectionDoneCallback != null) {
+            connectionDoneCallback(ok);
+            connectionDoneCallback = null;
           }
         })).Start();
       }
@@ -289,8 +299,7 @@ namespace SFTP
           return;
         }
         filename = cfi.UserInput;
-        //TODO: make overwrite work
-        //overwrite = cfi.Checkbox;
+        overwrite = cfi.Checkbox;
       }
 
       Icon defIcon = (Icon)Tray.Icon.Clone();
@@ -342,8 +351,7 @@ namespace SFTP
           return;
         }
         filename = cfi.UserInput;
-        //TODO: make overwrite work
-        //overwrite = cfi.Checkbox;
+        overwrite = cfi.Checkbox;
       }
 
       bool result = false;
@@ -398,8 +406,7 @@ namespace SFTP
           return;
         }
         filename = cfi.UserInput;
-        //TODO: make overwrite work
-        //overwrite = cfi.Checkbox;
+        overwrite = cfi.Checkbox;
       }
 
       Icon defIcon = (Icon)Tray.Icon.Clone();
@@ -494,53 +501,69 @@ namespace SFTP
 
       sshError = "";
 
-      if (!sshConnection.Connected) {
+      if (sshConnection == null || !sshConnection.IsConnected) {
+        bool bResume = false;
+        bool bOK = false;
+        connectionDoneCallback = (bool bSuccess) => {
+          bOK = bSuccess;
+          bResume = true;
+        };
         Connect();
+        while (!bResume) System.Threading.Thread.Sleep(1);
+        if (!bOK) {
+          sshError = "Couldn't connect to server.";
+          return false;
+        }
       }
 
       try {
-        // clear events :C
-        sshConnection.ClearEvents();
-
-        // make new events :D
-        sshConnection.OnTransferStart += new FileTransferEvent(delegate(string src, string dst, long transferredBytes, long totalBytes, string message)
-        {
-          this.ProgressBar.Start(filename, totalBytes);
-        });
-        sshConnection.OnTransferProgress += new FileTransferEvent(delegate(string src, string dst, long transferredBytes, long totalBytes, string message)
-        {
-          this.ProgressBar.Set(transferredBytes);
+        this.ProgressBar.Start(filename, ms.Length);
+        ms.Seek(0, SeekOrigin.Begin);
+        IAsyncResult arUpload = null;
+        AsyncCallback cbFinished = (IAsyncResult ar) => {
+          bRet = true;
+          bWait = false;
+        };
+        Action<ulong> cbProgress = new Action<ulong>((ulong offset) => {
+          this.ProgressBar.Set((long)offset);
           if (this.ProgressBar.Canceled) {
-            sshConnection.Cancel();
-            bWait = false;
+            sshConnection.EndUploadFile(arUpload);
             bRet = false;
+            bWait = false;
           }
         });
-        sshConnection.OnTransferEnd += new FileTransferEvent(delegate(string src, string dst, long transferredBytes, long totalBytes, string message)
-        {
-          this.ProgressBar.Done();
-          bWait = false;
-          bRet = true;
-        });
-        ms.Seek(0, SeekOrigin.Begin);
-        //TODO: Make this work
-        /*if (overwrite) {
-          try {
-            sshConnection.DeleteFile(strPath + filename);
-          } catch { }
-        }*/
-        sshConnection.Put(ms, strPath + filename);
-      } catch (Tamir.SharpSsh.jsch.SftpException ex) {
-        bWait = false;
-        sshError = ex.message;
-        throw ex;
+        try {
+          arUpload = sshConnection.BeginUploadFile(ms, strPath + filename, overwrite, cbFinished, filename, cbProgress);
+        } catch {
+          // failed to upload, queue it for a retry after reconnecting
+          sshConnection = null;
+          connectionDoneCallback = (bool bSuccess) => {
+            if (!bSuccess) {
+              bRet = false;
+              sshError = "Upload failed because couldn't connect to server.";
+              bWait = false;
+              return;
+            }
+            try {
+              arUpload = sshConnection.BeginUploadFile(ms, strPath + filename, overwrite, cbFinished, filename, cbProgress);
+            } catch (Exception ex) {
+              bRet = false;
+              sshError = "Upload failed twice: " + (ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+              bWait = false;
+            }
+          };
+          Connect();
+        }
       } catch (Exception ex) {
+        bRet = false;
         bWait = false;
-        sshError = "Misc error: " + ex.Message;
+        sshError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
         throw ex;
       }
 
       while (bWait) System.Threading.Thread.Sleep(1);
+
+      this.ProgressBar.Done();
       return bRet;
     }
 
