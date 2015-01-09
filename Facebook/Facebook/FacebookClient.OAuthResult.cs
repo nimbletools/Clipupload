@@ -153,7 +153,7 @@ namespace Facebook
             }
 
             var sb = new StringBuilder();
-            sb.AppendFormat(isMobile ? "https://m.facebook.com/dialog/{0}?" : "https://www.facebook.com/dialog/{0}?", dialog);
+            sb.AppendFormat(isMobile ? "https://m.facebook.com/{0}/dialog/{1}?" : "https://www.facebook.com/{0}/dialog/{1}?", _version, dialog);
 
             foreach (var kvp in dictionary)
                 sb.AppendFormat("{0}={1}&", HttpHelper.UrlEncode(kvp.Key), HttpHelper.UrlEncode(BuildHttpQuery(kvp.Value, HttpHelper.UrlEncode)));
