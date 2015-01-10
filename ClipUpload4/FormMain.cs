@@ -365,8 +365,10 @@ namespace ClipUpload4
       this.Version = this.settings.GetString("Version");
       this.panelDonate.Visible = this.settings.GetBool("DonateVisible");
 
-      AddonHelper.Android.Enabled = this.settings.GetBool("Android");
+      AddonHelper.Android.Enabled = this.settings.GetBool("Android") && File.Exists("adb.exe");
       if (AddonHelper.Android.Enabled) {
+        AddonHelper.Android.TempPath = this.settings.GetString("AndroidTempPath");
+        AddonHelper.Android.VideoBitrate = this.settings.GetInt("AndroidVideoBitrate");
         AddonHelper.Android.EnsureServer();
       }
     }

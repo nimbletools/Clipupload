@@ -25,6 +25,7 @@ namespace AddonHelper
     public static string TempPath = "/sdcard/";
     public static bool ServerRunning = false;
     public static Action CallbackRecordingFailed = null;
+    public static int VideoBitrate = 12;
 
     private static Process adbRecording = null;
     private static AndroidDevice[] adbDevices = new AndroidDevice[0];
@@ -182,8 +183,8 @@ namespace AddonHelper
     /// <summary>
     /// Start a video capture on the device via adb.
     /// </summary>
-    /// <param name="iBitrate">The bitrate. Multiply Mbps by 1000000 for this value. (12000000 = 12 Mbps)</param>
-    public static void StartRecording(string strDevice, int iBitrate = 12000000)
+    /// <param name="strDevice">The device serial number to use.</param>
+    public static void StartRecording(string strDevice)
     {
       string strAndroidPath = TempPath + "ClipuploadVideo.mp4";
 
@@ -191,7 +192,7 @@ namespace AddonHelper
         throw new Exception("Already recording.");
       }
 
-      adbRecording = Process.Start(new ProcessStartInfo("adb.exe", "-s " + strDevice + " shell screenrecord --bit-rate " + iBitrate + " \"" + strAndroidPath + "\"") {
+      adbRecording = Process.Start(new ProcessStartInfo("adb.exe", "-s " + strDevice + " shell screenrecord --bit-rate " + (VideoBitrate * 1000000) + " \"" + strAndroidPath + "\"") {
         UseShellExecute = false,
         CreateNoWindow = true,
         RedirectStandardOutput = true
