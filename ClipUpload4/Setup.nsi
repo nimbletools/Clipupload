@@ -123,6 +123,15 @@ SectionGroup /e "Private hosting" SecPrivateHosting
 	SectionEnd
 SectionGroupEnd
 
+SectionGroup /e "Local" SecLocal
+	Section "Desktop" SecAddonsDesktop
+		SetOutPath "$INSTDIR\Addons\Desktop"
+		File Addons\Desktop\Desktop.dll
+		File Addons\Desktop\Icon.ico
+		File Addons\Desktop\settings.txt.clean
+	SectionEnd
+SectionGroupEnd
+
 SectionGroup /e "Third-party" SecThirdParty
 	Section /o "ClipBoard" SecAddonClipBoard
 		SetOutPath "$INSTDIR\Addons\ClipBoard"
@@ -155,6 +164,9 @@ SectionEnd
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecAddonsPostHttp} "Upload to any endpoint on any HTTP server via POST requests."
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecAddonsSelfHoster} "Host all your files yourself and have others connect to your the local webserver that this addon hosts."
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecAddonsSFTP} "Upload via SFTP to an SSH server."
+	
+	!insertmacro MUI_DESCRIPTION_TEXT ${SecLocal} "Addons for the local filesystem"
+	!insertmacro MUI_DESCRIPTION_TEXT ${SecAddonsDesktop} "Save as files to the desktop."
 	
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecThirdParty} "Addons not made by the official developer."
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecAddonClipBoard} "Take screenshots and put them directly on the clipboard. Created by Jed."
