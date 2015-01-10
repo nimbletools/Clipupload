@@ -76,7 +76,7 @@ namespace ClipUpload4
       for (int i = 0; i < ctFamilies; i++) {
         FontFamily fam = FontFamily.Families[i];
         familyNames[i] = fam.Name;
-        if (strCurrentFamily == fam.Name) {
+        if (iSelectedFontFamily == 0 && strCurrentFamily == fam.Name) {
           iSelectedFontFamily = i;
         }
       }
