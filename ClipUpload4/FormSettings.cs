@@ -61,14 +61,6 @@ namespace ClipUpload4
 
       checkWatermark.Checked = mainClass.settings.GetBool("Watermark");
       textWatermarkText.Text = mainClass.settings.GetString("WatermarkText");
-      int iSelectedFontFamily = 0;
-      for (int i = 0; i < FontFamily.Families.Length; i++) {
-        comboWatermarkFontFamily.Items.Add(FontFamily.Families[i].Name);
-        if (mainClass.settings.GetString("WatermarkFontFamily") == FontFamily.Families[i].Name) {
-          iSelectedFontFamily = i;
-        }
-      }
-      comboWatermarkFontFamily.SelectedIndex = iSelectedFontFamily;
       numWatermarkFontSize.Value = mainClass.settings.GetInt("WatermarkFontSize");
       checkWatermarkFontBold.Checked = mainClass.settings.GetBool("WatermarkFontBold");
       string[] astrColor = mainClass.settings.GetString("WatermarkColor").Split(',');
@@ -76,6 +68,20 @@ namespace ClipUpload4
       picWatermarkColorPreview.BackColor = color;
       comboWatermarkPosition.SelectedIndex = mainClass.settings.GetInt("WatermarkLocation");
       numWatermarkTransparancy.Value = mainClass.settings.GetInt("WatermarkTransparency");
+
+      int iSelectedFontFamily = 0;
+      string strCurrentFamily = mainClass.settings.GetString("WatermarkFontFamily");
+      int ctFamilies = FontFamily.Families.Length;
+      string[] familyNames = new string[ctFamilies];
+      for (int i = 0; i < ctFamilies; i++) {
+        FontFamily fam = FontFamily.Families[i];
+        familyNames[i] = fam.Name;
+        if (strCurrentFamily == fam.Name) {
+          iSelectedFontFamily = i;
+        }
+      }
+      comboWatermarkFontFamily.Items.AddRange(familyNames.ToArray());
+      comboWatermarkFontFamily.SelectedIndex = iSelectedFontFamily;
 
       checkResize.Checked = mainClass.settings.GetBool("Resize");
       numResizeWidth.Value = mainClass.settings.GetInt("ResizeWidth");
