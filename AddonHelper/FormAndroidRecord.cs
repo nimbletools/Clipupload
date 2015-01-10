@@ -33,6 +33,14 @@ namespace AddonHelper
       labelStatus.Text = "Recording";
       labelStatus.ForeColor = Color.Red;
 
+      Android.CallbackRecordingFailed = () => {
+        this.Invoke(new Action(delegate
+        {
+          StopRecording();
+          MessageBox.Show("Screen recording is not supported on this device.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          this.Close();
+        }));
+      };
       Android.StartRecording(DeviceSerial);
     }
 

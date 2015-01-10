@@ -366,7 +366,9 @@ namespace ClipUpload4
       this.panelDonate.Visible = this.settings.GetBool("DonateVisible");
 
       AddonHelper.Android.Enabled = this.settings.GetBool("Android");
-      AddonHelper.Android.EnsureServer();
+      if (AddonHelper.Android.Enabled) {
+        AddonHelper.Android.EnsureServer();
+      }
     }
 
     public void LoadShortcuts()
@@ -605,6 +607,9 @@ namespace ClipUpload4
     private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
     {
       Tray.Visible = false;
+      if (AddonHelper.Android.Enabled) {
+        AddonHelper.Android.KillServer();
+      }
       Environment.Exit(0);
     }
 

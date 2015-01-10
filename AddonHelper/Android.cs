@@ -23,7 +23,11 @@ namespace AddonHelper
   {
     public static bool Enabled = false;
     public static string TempPath = "/sdcard/";
+    public static bool ServerRunning = false;
+    public static Action CallbackRecordingFailed = null;
+
     private static Process adbRecording = null;
+    private static AndroidDevice[] adbDevices = new AndroidDevice[0];
 
     /// <summary>
     /// Check if all is OK with the Android Debug Bridge and if there's a device ready.
@@ -32,6 +36,10 @@ namespace AddonHelper
     public static bool AllOK()
     {
       if (!Enabled) {
+        return false;
+      }
+
+      if (!ServerRunning) {
         return false;
       }
 
@@ -51,18 +59,37 @@ namespace AddonHelper
     /// </summary>
     public static void EnsureServer()
     {
-      Process proc = Process.Start(new ProcessStartInfo("adb.exe", "start-server") {
-        UseShellExecute = false,
-        CreateNoWindow = true
-      });
+      new Thread(new ThreadStart(delegate
+      {
+        Process.Start(new ProcessStartInfo("adb.exe", "start-server") {
+          UseShellExecute = false,
+          CreateNoWindow = true
+        }).WaitForExit();
+        ServerRunning = true;
+      })).Start();
     }
 
     /// <summary>
-    /// Get a list of devices with USB debugging enabled currently connected to the computer.
+    /// Kill a running adb server.
     /// </summary>
-    /// <returns>Array with information about the connected devices.</returns>
-    public static AndroidDevice[] ListDevices()
+    public static void KillServer()
     {
+      if (!AllOK()) {
+        return;
+      }
+      ServerRunning = false;
+      Process.Start(new ProcessStartInfo("adb.exe", "kill-server") {
+        UseShellExecute = false,
+        CreateNoWindow = true
+      }).WaitForExit();
+    }
+
+    private static AndroidDevice[] InternalListDevices()
+    {
+      EnsureServer();
+      if (!ServerRunning) {
+        return new AndroidDevice[0];
+      }
       Process proc = Process.Start(new ProcessStartInfo("adb.exe", "devices -l") {
         UseShellExecute = false,
         CreateNoWindow = true,
@@ -79,12 +106,38 @@ namespace AddonHelper
         AndroidDevice device = new AndroidDevice();
         device.SerialNumber = deviceInfo[0];
         device.Type = deviceInfo[1];
-        device.Product = deviceInfo[2].Substring("product:".Length);
-        device.Model = deviceInfo[3].Substring("model:".Length);
-        device.Device = deviceInfo[4].Substring("device:".Length);
+        if (deviceInfo.Length > 2) {
+          device.Product = deviceInfo[2].Substring("product:".Length);
+          device.Model = deviceInfo[3].Substring("model:".Length);
+          device.Device = deviceInfo[4].Substring("device:".Length);
+        } else {
+          device.Product = "Unknown";
+          device.Model = "Unknown";
+          device.Device = "Unknown";
+        }
         ret.Add(device);
       }
       return ret.ToArray();
+    }
+
+    /// <summary>
+    /// Get a list of devices with USB debugging enabled currently connected to the computer.
+    /// This array is cached because the adb server might not always be running, to avoid blocking calls.
+    /// </summary>
+    /// <param name="bForceRecache">Force the list of devices to reload. This can cause a possibly blocking call.</param>
+    /// <returns>Array with information about the connected devices.</returns>
+    public static AndroidDevice[] ListDevices(bool bForceRecache = false)
+    {
+      if (bForceRecache) {
+        // immediately recache
+        adbDevices = InternalListDevices();
+      } else {
+        // schedule a threaded recache
+        new Thread(() => {
+          adbDevices = InternalListDevices();
+        }).Start();
+      }
+      return adbDevices;
     }
 
     /// <summary>
@@ -140,7 +193,20 @@ namespace AddonHelper
 
       adbRecording = Process.Start(new ProcessStartInfo("adb.exe", "-s " + strDevice + " shell screenrecord --bit-rate " + iBitrate + " \"" + strAndroidPath + "\"") {
         UseShellExecute = false,
-        CreateNoWindow = true
+        CreateNoWindow = true,
+        RedirectStandardOutput = true
+      });
+      adbRecording.EnableRaisingEvents = true;
+      adbRecording.Exited += new EventHandler((o, e) => {
+        if (adbRecording == null || adbRecording.HasExited) { // it's null if StopRecording() was called to kill the process
+          return;
+        }
+        if (adbRecording.StandardOutput.ReadToEnd().Contains("screenrecord: not found")) {
+          if (CallbackRecordingFailed != null) {
+            CallbackRecordingFailed();
+          }
+        }
+        adbRecording = null;
       });
     }
 
@@ -153,7 +219,9 @@ namespace AddonHelper
         throw new Exception("Not yet recording.");
       }
 
-      adbRecording.Kill();
+      try {
+        adbRecording.Kill();
+      } catch { } // might fail due to the process not existing anymore (eg. when this function is called from CallbackRecordingFailed)
       adbRecording = null;
     }
 
