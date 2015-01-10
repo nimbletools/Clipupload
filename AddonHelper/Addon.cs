@@ -391,10 +391,13 @@ namespace AddonHelper
     /// <param name="info">Short info for short upload history in menu</param>
     public void Uploaded(string type, string URL, string info)
     {
+      string strMessage = type + " uploaded and URL" + (info.Contains('\n') ? "s" : "") + " copied to clipboard.";
       if (URL != "") {
         Clipboard.SetText(URL);
+      } else {
+        strMessage = type + " uploaded.";
       }
-      Tray.ShowBalloonTip(1000, this.GetType().Name, type + " uploaded and URL" + (info.Contains('\n') ? "s" : "") + " copied to clipboard.", ToolTipIcon.Info);
+      Tray.ShowBalloonTip(1000, this.GetType().Name, strMessage, ToolTipIcon.Info);
       if (info != "") {
         AddLog(URL, info);
       }
@@ -410,13 +413,27 @@ namespace AddonHelper
         return;
       }
       string finalCopy = "";
+      bool bHasURL = false;
+      bool bHasInfo = false;
       foreach (UploadedFile file in files) {
-        AddLog(file.URL, file.Info);
+        if (file.URL != "") {
+          bHasURL = true;
+        }
+        if (file.Info != "") {
+          bHasInfo = true;
+        }
+        if (bHasURL && bHasInfo) {
+          AddLog(file.URL, file.Info);
+        }
         finalCopy += file.URL + "\r\n";
       }
       Clipboard.SetText(finalCopy.Trim('\r', '\n'));
       string mult = files.Count != 1 ? "s" : "";
-      Tray.ShowBalloonTip(1000, this.GetType().Name, files.Count + " file" + mult + " uploaded and URL" + mult + " copied to clipboard.", ToolTipIcon.Info);
+      string strMessage = files.Count + " file" + mult + " uploaded and URL" + mult + " copied to clipboard.";
+      if (!bHasURL) {
+        strMessage = files.Count + " file" + mult + " uploaded.";
+      }
+      Tray.ShowBalloonTip(1000, this.GetType().Name, strMessage, ToolTipIcon.Info);
     }
 
     /// <summary>
