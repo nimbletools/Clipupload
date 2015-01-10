@@ -168,7 +168,7 @@ namespace ClipUpload4
       MessageBox.Show(
         "If \"Edit process\" is enabled, it allows you to press the P key while dragging to open the current selection in an " +
         "application such as MSPaint or any other image editing software. This way, you can edit your image there and remove " +
-        "unneeded parts or draw arrows around things that might be interesting. You can go full-out on these settings.", "ClipUpload 4", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        "unneeded parts or draw arrows around things that might be interesting. You can go full-out on these settings.", "Clipupload", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void button4_Click(object sender, EventArgs e)

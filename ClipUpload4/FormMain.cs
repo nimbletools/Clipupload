@@ -156,7 +156,7 @@ namespace ClipUpload4
       string path = Environment.CommandLine.Trim(' ', '"');
 
       if (!(path.Contains('\\') || path.Contains('/'))) {
-        Console.WriteLine("Please start ClipUpload 4 from Explorer, or add the absolute path.");
+        Console.WriteLine("Please start Clipupload from Explorer, or add the absolute path.");
         mustExit = true;
         this.Close();
         return;
@@ -808,19 +808,19 @@ namespace ClipUpload4
       tsi = (ToolStripMenuItem)cms.Items.Add("Exit");
       tsi.Click += new EventHandler(delegate { KillMe(); });
 
-      // 2nd anniversary
+      // 5th anniversary
       if (!this.settings.Contains("Cats")) {
         DateTime now = DateTime.Now;
-        if (now.Day == 14 && now.Month == 7 && now.Year == 2014) {
+        if (now.Day == 14 && now.Month == 7 && now.Year == 2015) {
           cms.Items.Add(new ToolStripSeparator());
 
-          tsi = (ToolStripMenuItem)cms.Items.Add("Happy 4th Anniversary, ClipUpload!");
+          tsi = (ToolStripMenuItem)cms.Items.Add("Happy 5th Anniversary, Clipupload!");
           tsi.Image = this.iconList.Images[6];
           tsi.Click += new EventHandler(delegate
           {
             this.settings.SetBool("Cats", true);
             this.settings.Save();
-            MessageBox.Show("You may now upload cat watermarks. Enjoy.", "ClipUpload 4th Anniversary", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("You may now upload cat watermarks. Enjoy.", "Clipupload 5th Anniversary", MessageBoxButtons.OK, MessageBoxIcon.Information);
           });
         }
       } else {
@@ -832,7 +832,7 @@ namespace ClipUpload4
         {
           this.settings.Delete("Cats");
           this.settings.Save();
-          MessageBox.Show("And the cat watermarks are now gone.", "ClipUpload 4th Anniversary", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          MessageBox.Show("And the cat watermarks are now gone.", "Clipupload 5th Anniversary", MessageBoxButtons.OK, MessageBoxIcon.Information);
         });
       }
 

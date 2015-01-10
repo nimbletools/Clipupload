@@ -36,7 +36,7 @@ namespace GlobalHook
 
       InvokeKeyDown(e);
       //InvokeKeyPress(wParam, lParam); // Messes up certain keyboard layouts with characters such as `, ~, ", ', ^, etc.
-      //InvokeKeyUp(e); // Not required for ClipUpload 4
+      //InvokeKeyUp(e); // Not required for Clipupload
 
       return !e.Handled;
     }

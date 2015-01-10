@@ -240,7 +240,7 @@
       this.MaximizeBox = false;
       this.Name = "FormMain";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-      this.Text = "ClipUpload 4";
+      this.Text = "Clipupload";
       this.Activated += new System.EventHandler(this.Form1_Activated);
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);

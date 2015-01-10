@@ -101,7 +101,7 @@ namespace ClipUpload4
           Info = ApplyObject.GetInfo();
         } catch (Exception ex) {
           string strExceptionMessage = (ex.InnerException != null ? ex.InnerException.Message : ex.Message);
-          MessageBox.Show("ClipUpload addon loading exception caught: \"" + strExceptionMessage + "\"", "ClipUpload 4", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          MessageBox.Show("Clipupload addon loading exception caught: \"" + strExceptionMessage + "\"", "Clipupload", MessageBoxButtons.OK, MessageBoxIcon.Error);
           Program.Debug("Addon loading exception caught: \"" + strExceptionMessage + "\"\n\n" + ex.StackTrace);
         }
       } else {

@@ -51,7 +51,7 @@ namespace ClipUploadShellExtension
           }
 
           if (tsiRoot == null) {
-            tsiRoot = new ToolStripMenuItem("Upload with ClipUpload", ClipUploadShellExtension.Properties.Resources.cu4icon_small);
+            tsiRoot = new ToolStripMenuItem("Upload with Clipupload", ClipUploadShellExtension.Properties.Resources.cu4icon_small);
             ret.Items.Add(tsiRoot);
           }
 
@@ -76,9 +76,9 @@ namespace ClipUploadShellExtension
                 writer.WriteLine("END");
               }
             } catch (Exception ex) {
-              string strError = "Failed to connect to ClipUpload IPC: \"" + (ex.InnerException != null ? ex.InnerException.Message : ex.Message) + "\"";
+              string strError = "Failed to connect to Clipupload IPC: \"" + (ex.InnerException != null ? ex.InnerException.Message : ex.Message) + "\"";
               LogError(strError);
-              MessageBox.Show(strError, "ClipUpload 4", MessageBoxButtons.OK, MessageBoxIcon.Error);
+              MessageBox.Show(strError, "Clipupload", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
           };
         }
