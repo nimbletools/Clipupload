@@ -90,7 +90,7 @@ namespace Desktop
 
       ret.Add(new MenuEntry() {
         IsDragItem = true,
-        Text = "Dropbox",
+        Text = "Desktop",
         Image = this.bmpIcon16,
         Action = new Action(delegate { this.Drag(new Action<DragCallback>(DragCallback)); }),
         ActionSecondary = new Action(delegate { this.Drag(new Action<DragCallback>(DragCallbackSecondary)); }),
@@ -100,7 +100,7 @@ namespace Desktop
 
       ret.Add(new MenuEntry() {
         IsAnimateItem = true,
-        Text = "Dropbox",
+        Text = "Desktop",
         Image = this.bmpIcon16,
         Action = new Action(delegate { this.Drag(new Action<DragCallback>(DragCallback), true); }),
         ActionSecondary = new Action(delegate { this.Drag(new Action<DragCallback>(DragCallbackSecondary), true); }),
@@ -110,7 +110,7 @@ namespace Desktop
 
       ret.Add(new MenuEntry() {
         Visible = ClipboardContainsImage || ClipboardContainsFileList || ClipboardContainsText,
-        Text = "Dropbox",
+        Text = "Desktop",
         Image = this.bmpIcon16,
         Action = new Action(delegate { Upload(false); }),
         ActionSecondary = new Action(delegate { Upload(true); }),
