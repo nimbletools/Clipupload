@@ -1,10 +1,10 @@
 !include "MUI2.nsh"
 
-Name "Nimble ClipUpload"
-#OutFile "ClipUploadSetup.exe"
+Name "Nimble Clipupload"
+#OutFile "ClipuploadSetup.exe"
 
-InstallDir "$PROGRAMFILES\Nimble Tools\ClipUpload"
-InstallDirRegKey HKCU "Software\ClipUpload" ""
+InstallDir "$PROGRAMFILES\Nimble Tools\Clipupload"
+InstallDirRegKey HKCU "Software\Clipupload" ""
 
 RequestExecutionLevel admin
 
@@ -20,7 +20,7 @@ RequestExecutionLevel admin
 
 !insertmacro MUI_LANGUAGE "English"
 
-Section "ClipUpload" SecProgram
+Section "Clipupload" SecProgram
 	SectionIn RO
 	SetOutPath "$INSTDIR"
 	AccessControl::GrantOnFile "$INSTDIR" "(S-1-5-32-545)" "FullAccess"
@@ -30,13 +30,13 @@ Section "ClipUpload" SecProgram
 	File changelog.txt
 	File settings.txt.clean
 	File srm.exe
-	WriteRegStr HKCU "Software\ClipUpload" "" $INSTDIR
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ClipUpload" "DisplayName" "ClipUpload 4"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ClipUpload" "UninstallString" '"$INSTDIR\Uninstall.exe"'
-	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ClipUpload" "NoModify" 1
-	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\ClipUpload" "NoRepair" 1
+	WriteRegStr HKCU "Software\Clipupload" "" $INSTDIR
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "DisplayName" "Clipupload"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "UninstallString" '"$INSTDIR\Uninstall.exe"'
+	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "NoModify" 1
+	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "NoRepair" 1
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
-	CreateShortCut "$SMPROGRAMS\Nimble ClipUpload.lnk" "$INSTDIR\ClipUpload4.exe"
+	CreateShortCut "$SMPROGRAMS\Nimble Clipupload.lnk" "$INSTDIR\ClipUpload4.exe"
 	
 	ClearErrors
 	ReadRegDWORD $0 HKLM "Software\Microsoft\Net Framework Setup\NDP\v4\Full" "Install"
@@ -117,7 +117,7 @@ SectionGroup /e "Private hosting" SecPrivateHosting
 	Section /o "SFTP (file transfer over SSH)" SecAddonsSFTP
 		SetOutPath "$INSTDIR\Addons\SFTP"
 		File Addons\SFTP\SFTP.dll
-		File Addons\SFTP\SharpSSH.dll
+		File Addons\SFTP\Renci.SshNet.dll
 		File Addons\SFTP\Icon.ico
 		File Addons\SFTP\settings.txt.clean
 	SectionEnd
@@ -136,12 +136,12 @@ Section "Uninstall"
 	ExecWait "$INSTDIR\srm.exe uninstall $\"$INSTDIR\ClipUploadShellExtension.dll$\""
 	Delete "$INSTDIR\Uninstall.exe"
 	RMDir /r "$INSTDIR"
-	Delete "$SMPROGRAMS\Nimble ClipUpload.lnk"
-	DeleteRegKey /ifempty HKCU "Software\ClipUpload"
+	Delete "$SMPROGRAMS\Nimble Clipupload.lnk"
+	DeleteRegKey /ifempty HKCU "Software\Clipupload"
 SectionEnd
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-	!insertmacro MUI_DESCRIPTION_TEXT ${SecProgram} "The ClipUpload program."
+	!insertmacro MUI_DESCRIPTION_TEXT ${SecProgram} "The Clipupload program."
 	
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecCloudHosting} "Addons for uploading to cloud-based public services."
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecAddonsDropbox} "Upload to your public Dropbox folder."
