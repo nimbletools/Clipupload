@@ -100,6 +100,9 @@ namespace AddonHelper
       string[] astrDevices = strList.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();
       List<AndroidDevice> ret = new List<AndroidDevice>();
       foreach (string strDeviceLine in astrDevices) {
+        if (strDeviceLine.StartsWith("*")) { // "* daemon not running, daemon started successfully"
+          continue;
+        }
         string[] deviceInfo = strDeviceLine.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         if (deviceInfo[1] == "offline") {
           continue;
