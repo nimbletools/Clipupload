@@ -391,9 +391,13 @@ namespace AddonHelper
     /// <param name="info">Short info for short upload history in menu</param>
     public void Uploaded(string type, string URL, string info)
     {
-      Clipboard.SetText(URL);
+      if (URL != "") {
+        Clipboard.SetText(URL);
+      }
       Tray.ShowBalloonTip(1000, this.GetType().Name, type + " uploaded and URL" + (info.Contains('\n') ? "s" : "") + " copied to clipboard.", ToolTipIcon.Info);
-      AddLog(URL, info);
+      if (info != "") {
+        AddLog(URL, info);
+      }
     }
 
     /// <summary>
