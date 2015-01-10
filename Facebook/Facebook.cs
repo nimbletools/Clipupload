@@ -116,6 +116,34 @@ namespace Facebook
         Action = new Action(Settings)
       });
 
+      if (Android.AllOK()) {
+        AndroidDevice[] devices = Android.ListDevices();
+        foreach (AndroidDevice device in devices) {
+          string strDeviceSerial = device.SerialNumber;
+          ret.Add(new MenuEntry() {
+            IsAndroid = true,
+            ShowShortInfo = false,
+            Text = device.Model,
+            SubEntries = new List<MenuEntry>(new MenuEntry[] {
+                new MenuEntry() {
+                  IsAndroidScreenshotItem = true,
+                  Text = "Screenshot",
+                  Image = this.bmpIcon,
+                  Action = new Action(delegate { AndroidScreenshot(strDeviceSerial, false); }),
+                  ActionSecondary = new Action(delegate { AndroidScreenshot(strDeviceSerial, true); })
+                },
+                new MenuEntry() {
+                  IsAndroidVideoItem = true,
+                  Text = "Video",
+                  Image = this.bmpIcon,
+                  Action = new Action(delegate { AndroidVideo(strDeviceSerial, false); }),
+                  ActionSecondary = new Action(delegate { AndroidVideo(strDeviceSerial, true); })
+                }
+              })
+          });
+        }
+      }
+
       return ret.ToArray();
     }
 
@@ -200,6 +228,28 @@ namespace Facebook
       Tray.Icon = defIcon;
     }
 
+    public void UploadVideo(Stream videoStream)
+    {
+      Icon defIcon = (Icon)Tray.Icon.Clone();
+      Tray.Icon = new Icon(AddonPath + "/Icon.ico", new Size(16, 16));
+
+      string url = "";
+      string failReason = "";
+      try {
+        url = this.UploadVideoToFacebook(videoStream);
+      } catch (Exception ex) { failReason = (ex.InnerException != null ? ex.InnerException.Message : ex.Message); }
+
+      if (url != "CANCELED") {
+        if (url != "") {
+          Uploaded("Video", url, "Android Video");
+        } else {
+          Failed(failReason);
+        }
+      }
+
+      Tray.Icon = defIcon;
+    }
+
     public void UploadFiles(StringCollection files)
     {
       if (files.Count == 0)
@@ -246,6 +296,22 @@ namespace Facebook
       Tray.Icon = defIcon;
     }
 
+    public void AndroidScreenshot(string strDeviceSerial, bool askCustomFilename)
+    {
+      UploadImage(Image.FromFile(Android.PullScreenshot(strDeviceSerial)));
+    }
+
+    public void AndroidVideo(string strDeviceSerial, bool askCustomFilename)
+    {
+      FormAndroidRecord recorder = new FormAndroidRecord(strDeviceSerial);
+      recorder.Callback = (string strFilename) => {
+        using (FileStream fs = File.OpenRead(strFilename)) {
+          UploadVideo(fs);
+        }
+      };
+      recorder.Show();
+    }
+
     public string UploadToFacebook(MemoryStream ms)
     {
       // TODO: Make progressbar functional for C# Facebook SDK.
@@ -255,7 +321,6 @@ namespace Facebook
       string url = "";
 
       ms.Seek(0, SeekOrigin.Begin);
-      long iLength = ms.Length;
 
       FacebookMediaStream img = new FacebookMediaStream();
       img.ContentType = "image/png";
@@ -270,6 +335,29 @@ namespace Facebook
 
       string photoID = ret.id;
       url = "https://www.facebook.com/photo.php?fbid=" + photoID;
+
+      this.ProgressBar.Done();
+
+      return url;
+    }
+
+    public string UploadVideoToFacebook(Stream videoStream)
+    {
+      this.ProgressBar.Start("Facebook", videoStream.Length);
+
+      string url = "";
+
+      FacebookMediaStream video = new FacebookMediaStream();
+      video.ContentType = "video/mp4";
+      video.FileName = this.RandomFilename(5) + ".mp4";
+      video.SetValue(videoStream);
+
+      Dictionary<string, object> videoParams = new Dictionary<string, object>();
+      videoParams["video"] = video;
+      dynamic ret = this.facebookClient.Post("/me/videos", videoParams);
+
+      string videoID = ret.id;
+      url = "https://www.facebook.com/video.php?v=" + videoID;
 
       this.ProgressBar.Done();
 

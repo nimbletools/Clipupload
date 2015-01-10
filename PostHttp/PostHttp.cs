@@ -145,6 +145,34 @@ namespace PostHttp
           ShortcutModifiers = this.shortCutPasteModifiers,
           ShortcutKey = this.shortCutPasteKey
         });
+
+        if (Android.AllOK()) {
+          AndroidDevice[] devices = Android.ListDevices();
+          foreach (AndroidDevice device in devices) {
+            string strDeviceSerial = device.SerialNumber;
+            ret.Add(new MenuEntry() {
+              IsAndroid = true,
+              ShowShortInfo = false,
+              Text = device.Model,
+              SubEntries = new List<MenuEntry>(new MenuEntry[] {
+                new MenuEntry() {
+                  IsAndroidScreenshotItem = true,
+                  Text = "Screenshot",
+                  Image = this.bmpIcon16,
+                  Action = new Action(delegate { AndroidScreenshot(strDeviceSerial, false); }),
+                  ActionSecondary = new Action(delegate { AndroidScreenshot(strDeviceSerial, true); })
+                },
+                new MenuEntry() {
+                  IsAndroidVideoItem = true,
+                  Text = "Video",
+                  Image = this.bmpIcon16,
+                  Action = new Action(delegate { AndroidVideo(strDeviceSerial, false); }),
+                  ActionSecondary = new Action(delegate { AndroidVideo(strDeviceSerial, true); })
+                }
+              })
+            });
+          }
+        }
       }
 
       return ret.ToArray();
@@ -357,6 +385,27 @@ namespace PostHttp
       }
 
       Tray.Icon = defIcon;
+    }
+
+    public void AndroidScreenshot(string strDeviceSerial, bool askCustomFilename)
+    {
+      UploadImage(Image.FromFile(Android.PullScreenshot(strDeviceSerial)));
+    }
+
+    public void AndroidVideo(string strDeviceSerial, bool askCustomFilename)
+    {
+      FormAndroidRecord recorder = new FormAndroidRecord(strDeviceSerial);
+      recorder.Callback = (string strFilename) => {
+        StringCollection coll = new StringCollection();
+
+        string filename = this.RandomFilename(this.settings.GetInt("Length"));
+        filename = Path.GetTempPath() + filename + ".mp4";
+        File.Move(strFilename, filename);
+
+        coll.Add(filename);
+        UploadFiles(coll);
+      };
+      recorder.Show();
     }
 
     public string UploadToEndPoint(MemoryStream ms, string filename)

@@ -173,6 +173,27 @@ namespace Imgur
         ShortcutKey = this.shortCutPasteKey
       });
 
+      if (Android.AllOK()) {
+        AndroidDevice[] devices = Android.ListDevices();
+        foreach (AndroidDevice device in devices) {
+          string strDeviceSerial = device.SerialNumber;
+          ret.Add(new MenuEntry() {
+            IsAndroid = true,
+            ShowShortInfo = false,
+            Text = device.Model,
+            SubEntries = new List<MenuEntry>(new MenuEntry[] {
+                new MenuEntry() {
+                  IsAndroidScreenshotItem = true,
+                  Text = "Screenshot",
+                  Image = this.bmpIcon,
+                  Action = new Action(delegate { AndroidScreenshot(strDeviceSerial, false); }),
+                  ActionSecondary = new Action(delegate { AndroidScreenshot(strDeviceSerial, true); })
+                }
+              })
+          });
+        }
+      }
+
       return ret.ToArray();
     }
 
@@ -365,6 +386,11 @@ namespace Imgur
       }
 
       Tray.Icon = defIcon;
+    }
+
+    public void AndroidScreenshot(string strDeviceSerial, bool askCustomFilename)
+    {
+      UploadImage(Image.FromFile(Android.PullScreenshot(strDeviceSerial)));
     }
 
     public string UploadToImgur(MemoryStream ms, int width, int height)

@@ -155,6 +155,34 @@ namespace Dropbox
           ShortcutModifiers = this.shortCutPasteModifiers,
           ShortcutKey = this.shortCutPasteKey
         });
+
+        if (Android.AllOK()) {
+          AndroidDevice[] devices = Android.ListDevices();
+          foreach (AndroidDevice device in devices) {
+            string strDeviceSerial = device.SerialNumber;
+            ret.Add(new MenuEntry() {
+              IsAndroid = true,
+              ShowShortInfo = false,
+              Text = device.Model,
+              SubEntries = new List<MenuEntry>(new MenuEntry[] {
+                new MenuEntry() {
+                  IsAndroidScreenshotItem = true,
+                  Text = "Screenshot",
+                  Image = this.bmpIcon16,
+                  Action = new Action(delegate { AndroidScreenshot(strDeviceSerial, false); }),
+                  ActionSecondary = new Action(delegate { AndroidScreenshot(strDeviceSerial, true); })
+                },
+                new MenuEntry() {
+                  IsAndroidVideoItem = true,
+                  Text = "Video",
+                  Image = this.bmpIcon16,
+                  Action = new Action(delegate { AndroidVideo(strDeviceSerial, false); }),
+                  ActionSecondary = new Action(delegate { AndroidVideo(strDeviceSerial, true); })
+                }
+              })
+            });
+          }
+        }
       }
 
       return ret.ToArray();
@@ -457,6 +485,33 @@ namespace Dropbox
       }
 
       Tray.Icon = defIcon;
+    }
+
+    public void AndroidScreenshot(string strDeviceSerial, bool askCustomFilename)
+    {
+      UploadImage(Image.FromFile(Android.PullScreenshot(strDeviceSerial)), askCustomFilename);
+    }
+
+    public void AndroidVideo(string strDeviceSerial, bool askCustomFilename)
+    {
+      FormAndroidRecord recorder = new FormAndroidRecord(strDeviceSerial);
+      recorder.Callback = (string strFilename) => {
+        StringCollection coll = new StringCollection();
+
+        string filename = this.RandomFilename(this.settings.GetInt("Length"));
+        if (this.useMD5) {
+          filename = MD5(filename + rnd.Next(1000, 9999).ToString());
+
+          if (this.shortMD5)
+            filename = filename.Substring(0, this.length);
+        }
+        filename = Path.GetTempPath() + filename + ".mp4";
+        File.Move(strFilename, filename);
+
+        coll.Add(filename);
+        UploadFiles(coll, askCustomFilename);
+      };
+      recorder.Show();
     }
 
     public void Upload(bool askCustomFilename)

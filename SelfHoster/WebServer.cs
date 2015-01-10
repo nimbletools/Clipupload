@@ -37,8 +37,14 @@ namespace SelfHoster
     private void Loop()
     {
       while (true) {
-        TcpClient client = ws_listener.AcceptTcpClient();
-        new Thread(new ParameterizedThreadStart(HandleClient)).Start(client);
+        try {
+          TcpClient client = ws_listener.AcceptTcpClient();
+          new Thread(new ParameterizedThreadStart(HandleClient)).Start(client);
+        } catch {
+          if (ws_listener == null) {
+            return;
+          }
+        }
       }
     }
 
