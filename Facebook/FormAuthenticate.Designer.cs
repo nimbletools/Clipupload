@@ -35,7 +35,7 @@
       this.web.Name = "web";
       this.web.Size = new System.Drawing.Size(537, 520);
       this.web.TabIndex = 0;
-      this.web.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.web_Navigating);
+      this.web.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.web_DocumentCompleted);
       // 
       // FormAuthenticate
       // 

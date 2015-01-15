@@ -21,7 +21,7 @@ namespace Facebook
       this.web.Navigate(url);
     }
 
-    private void web_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+    private void web_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
     {
       string url = e.Url.AbsoluteUri;
       if (url.Contains("/login_success.html?error=")) {
