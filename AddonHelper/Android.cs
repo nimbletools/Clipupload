@@ -103,8 +103,11 @@ namespace AddonHelper
         if (strDeviceLine.StartsWith("*")) { // "* daemon not running, daemon started successfully"
           continue;
         }
+        if (strDeviceLine.Trim() == "List of devices attached") { // can happen when above gets triggered
+          continue;
+        }
         string[] deviceInfo = strDeviceLine.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        if (deviceInfo[1] == "offline") {
+        if (deviceInfo[1] == "offline") { // devices can be "offline"? TODO: find out what this means..
           continue;
         }
         AndroidDevice device = new AndroidDevice();
