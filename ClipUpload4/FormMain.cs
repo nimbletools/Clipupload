@@ -118,7 +118,12 @@ namespace ClipUpload4
     void IPC_Server()
     {
       TcpListener listener = new TcpListener(IPAddress.Loopback, 33404);
-      listener.Start();
+      try {
+        listener.Start();
+      } catch {
+        // wtf??
+        return;
+      }
 
       while (true) {
         TcpClient client = listener.AcceptTcpClient();
