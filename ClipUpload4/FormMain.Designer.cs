@@ -1,4 +1,4 @@
-﻿namespace ClipUpload4
+﻿namespace Clipupload
 {
   partial class FormMain
   {

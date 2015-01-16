@@ -8,8 +8,8 @@
     <ProjectGuid>{38B2CAB1-15D9-43C9-B853-ADAE7D4DEF58}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClipUpload4</RootNamespace>
-    <AssemblyName>ClipUpload4</AssemblyName>
+    <RootNamespace>Clipupload</RootNamespace>
+    <AssemblyName>Clipupload</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

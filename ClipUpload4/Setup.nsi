@@ -26,7 +26,7 @@ Section "Clipupload" SecProgram
 	AccessControl::GrantOnFile "$INSTDIR" "(S-1-5-32-545)" "FullAccess"
 	File AddonHelper.dll
 	File ClipUploadShellExtension.dll
-	File ClipUpload4.exe
+	File Clipupload.exe
 	File changelog.txt
 	File settings.txt.clean
 	File srm.exe
@@ -36,7 +36,7 @@ Section "Clipupload" SecProgram
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "NoModify" 1
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "NoRepair" 1
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
-	CreateShortCut "$SMPROGRAMS\Nimble Clipupload.lnk" "$INSTDIR\ClipUpload4.exe"
+	CreateShortCut "$SMPROGRAMS\Nimble Clipupload.lnk" "$INSTDIR\Clipupload.exe"
 	
 	ClearErrors
 	ReadRegDWORD $0 HKLM "Software\Microsoft\Net Framework Setup\NDP\v4\Full" "Install"

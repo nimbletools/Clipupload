@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace ClipUpload4
+namespace Clipupload
 {
   // this class is here to fix a problem with Chrome and IE which marks every downloaded file with a
   // zone identifier, causing the program to fail loading the dll's dynamically causing the entire

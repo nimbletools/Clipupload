@@ -16,9 +16,9 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using System.Net.Sockets;
 using Nimble.JSON;
-using ClipUpload4.Properties;
+using Clipupload.Properties;
 
-namespace ClipUpload4
+namespace Clipupload
 {
   public partial class FormMain : Form
   {
@@ -186,16 +186,15 @@ namespace ClipUpload4
           if (res["status"] != "OK") {
             throw new Exception();
           }
-          if (res["version"] != Version) {
-            int iLatestMinor = int.Parse(res["version"].Split('.').Last());
-            int iMinor = int.Parse(Version.Split('.').Last());
-            if (iLatestMinor > iMinor) {
-              this.Text += " (outdated)";
-              this.Tray.ShowBalloonTip(5, "ClipUpload Update", "A new update for ClipUpload is available, version " + res["version"] + ". Visit https://nimble.tools/clipupload to get the new version.", ToolTipIcon.Info);
-            } else {
-              this.Text += " (pre-release)";
-              this.Tray.ShowBalloonTip(5, "ClipUpload Pre-release", "You are running on a pre-release version of ClipUpload, version " + Version + ". The latest stable version is " + res["version"] + ". Please report all bugs.", ToolTipIcon.Warning);
-            }
+          Version vLatest = new Version(res["version"]);
+          Version vNow = new Version(Version);
+          int iVersionDiff = vNow.CompareTo(vLatest);
+          if (iVersionDiff < 0) {
+            this.Text += " (outdated)";
+            this.Tray.ShowBalloonTip(5, "Clipupload Update", "A new update for ClipUpload is available, version " + res["version"] + ". Visit https://nimble.tools/clipupload to get the new version.", ToolTipIcon.Info);
+          } else if (iVersionDiff > 0) {
+            this.Text += " (pre-release)";
+            this.Tray.ShowBalloonTip(5, "Clipupload Pre-release", "You are running on a pre-release version of Clipupload, version " + Version + ". The latest stable version is " + res["version"] + ". Please report all bugs.", ToolTipIcon.Warning);
           }
         } catch (Exception ex) {
           Program.Debug("Update check threw " + ex.GetType().FullName + ": '" + ex.Message + "'");

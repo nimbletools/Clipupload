@@ -11,7 +11,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace ClipUpload4
+namespace Clipupload
 {
   public partial class FormUploadLog : Form
   {

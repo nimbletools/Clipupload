@@ -19,7 +19,7 @@ Or visit my website: http://angelog.nl/
 =======================================
 
  - Extract this RAR to some place on your harddrive. I recommend having a folder somewhere on your C: drive, like C:\ClipUpload, but of course this is personal preference.
- - Open ClipUpload4.exe. Done!
+ - Open Clipupload.exe. Done!
 
 OR
 
@@ -66,8 +66,8 @@ A: The encoding of gif animations can take a rather long time, depending on the 
 
 More info on developing addons and ClipUpload can be found at:
 
- - http://wiki.clipupload.net/
  - http://clipupload.net/
+ - https://nimble.tools/clipupload
 
 You can contact me for support like bugs or feature requests at angelo@clipupload.net.
 

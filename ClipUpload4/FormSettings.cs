@@ -10,7 +10,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace ClipUpload4
+namespace Clipupload
 {
   public partial class FormSettings : Form
   {
@@ -32,7 +32,7 @@ namespace ClipUpload4
 
       autostartRegKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-      checkAutostart.Checked = autostartRegKey.GetValue("ClipUpload4") != null;
+      checkAutostart.Checked = autostartRegKey.GetValue("Clipupload") != null;
       checkHideDonate.Checked = !mainClass.settings.GetBool("DonateVisible");
 
       checkProgressBar.Checked = mainClass.settings.GetBool("ProgressBar");
@@ -103,9 +103,9 @@ namespace ClipUpload4
     private void button2_Click(object sender, EventArgs e)
     {
       if (checkAutostart.Checked)
-        autostartRegKey.SetValue("ClipUpload4", Application.ExecutablePath);
+        autostartRegKey.SetValue("Clipupload", Application.ExecutablePath);
       else
-        autostartRegKey.DeleteValue("ClipUpload4", false);
+        autostartRegKey.DeleteValue("Clipupload", false);
 
       mainClass.settings.SetBool("DonateVisible", !checkHideDonate.Checked);
 

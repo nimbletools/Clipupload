@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 
-namespace ClipUpload4
+namespace Clipupload
 {
   static class Program
   {
@@ -24,7 +24,7 @@ namespace ClipUpload4
       else
         writer = new StreamWriter(File.Create("debug.txt"));
 
-      writer.WriteLine("[ClipUpload4 - " + DateTime.Now.ToString() + "] " + str);
+      writer.WriteLine("[Clipupload - " + DateTime.Now.ToString() + "] " + str);
       writer.Close();
       writer.Dispose();
     }

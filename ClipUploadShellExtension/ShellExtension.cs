@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SharpShell.SharpContextMenu;
 using SharpShell.Attributes;
-using ClipUpload4;
+using Clipupload;
 using System.IO;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;

@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ClipUpload4
+namespace Clipupload
 {
   public class AddonManager
   {
