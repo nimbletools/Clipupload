@@ -12,7 +12,7 @@ First released in July of 2010, ClipUpload is the leading piece of software for 
 * SFTP (via SSH)
 * HTTP (via Post)
 * Built-in HTTP server
-* Or some public services, such as [Dropbox](https://dropbox.com/), Facebook, [Imgur](https://imgur.com/), [Pastebin](https://pastebin.com/), and [Zippyshare](http://zippyshare.com/)
+* Or some public services, such as [Dropbox](https://dropbox.com/), Facebook, [Imgur](https://imgur.com/), [Pastebin](https://pastebin.com/), and [Zippyshare](https://zippyshare.com/)
 * ...and more!
 
 Clipupload has a fully featured addon system, so you're able to use existing addons created by fans, as well as easily create your own.
