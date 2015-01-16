@@ -26,8 +26,8 @@ namespace Clipupload
 
       // check for old startup registry entry
       RegistryKey keyOld = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-      if (keyOld.GetValue("ClipUpload3") != null) {
-        keyOld.DeleteValue("ClipUpload3", false);
+      if (keyOld.GetValue("ClipUpload4") != null) {
+        keyOld.DeleteValue("ClipUpload4", false);
       }
 
       autostartRegKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
