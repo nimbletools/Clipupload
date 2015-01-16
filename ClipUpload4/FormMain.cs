@@ -843,6 +843,28 @@ namespace ClipUpload4
         });
       }
 
+      cms.LocationChanged += new EventHandler((o, ee) => {
+        // fix a bug in the .Net Framework that positions the context menu on the left monitor if the task bar is positioned on the left side of the primary screen
+        // this is done by modifying the position as soon as it gets opened
+        Point ptContextMenu = new Point(cms.Left, cms.Top);
+        Point ptMouse = Cursor.Position;
+
+        Screen scrContextMenu = Screen.FromPoint(ptContextMenu);
+        Screen scrCursor = Screen.FromPoint(ptMouse);
+
+        // if mouse and context menu are on different screens
+        if (scrContextMenu.DeviceName != scrCursor.DeviceName) {
+          // reposition X
+          if (ptContextMenu.X < ptMouse.X) {
+            cms.Left = ptMouse.X;
+          } else {
+            cms.Left = ptMouse.X - cms.Width;
+          }
+          // reposition Y (this is inaccurate as we can't really know for absolute certain..)
+          cms.Top = ptMouse.Y - cms.Height;
+        }
+      });
+
       Tray.ContextMenuStrip = cms;
     }
 
