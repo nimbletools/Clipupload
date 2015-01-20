@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Clipupload
 {
@@ -235,10 +236,21 @@ namespace Clipupload
     private void button7_Click(object sender, EventArgs e)
     {
       Process.Start(new ProcessStartInfo() {
+        FileName = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() + "RegAsm.exe",
+        Verb = "runas",
+        Arguments = "ClipUploadShellExtension.dll"
+      });
+      Process.Start(new ProcessStartInfo() {
         FileName = "srm.exe",
         Verb = "runas",
         Arguments = "install ClipUploadShellExtension.dll -codebase"
       });
+      Process[] explorers = Process.GetProcessesByName("explorer");
+      foreach (Process explorer in explorers) {
+        try {
+          explorer.Kill();
+        } catch { }
+      }
     }
   }
 }

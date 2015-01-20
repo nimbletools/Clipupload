@@ -1,4 +1,5 @@
 !include "MUI2.nsh"
+!include "nsProcess.nsh"
 
 Name "Nimble Clipupload"
 #OutFile "ClipuploadSetup.exe"
@@ -24,12 +25,34 @@ Section "Clipupload" SecProgram
 	SectionIn RO
 	SetOutPath "$INSTDIR"
 	AccessControl::GrantOnFile "$INSTDIR" "(S-1-5-32-545)" "FullAccess"
+	# Kill Clipupload in the case that it's still running
+	${nsProcess::KillProcess} "Clipupload.exe" $2
+	# If shell extension is already present in directory
+	# Make sure to uninstall and unregister it
+	IfFileExists ClipUploadShellExtension.dll 0 continueInstall
+		ReadRegStr $1 HKLM "Software\Microsoft\Net Framework Setup\NDP\v4\Full" "InstallPath"
+		IfErrors skipShellUnreg
+			ExecWait "$1\RegAsm.exe /unregister $\"$INSTDIR\ClipUploadShellExtension.dll$\""
+			ExecWait "$INSTDIR\srm.exe uninstall $\"$INSTDIR\ClipUploadShellExtension.dll$\""
+			${nsProcess::KillProcess} "explorer.exe" $2
+			Sleep 1000
+		skipShellUnreg:
+	continueInstall:
 	File AddonHelper.dll
 	File ClipUploadShellExtension.dll
+	File SharpShell.dll
 	File Clipupload.exe
 	File changelog.txt
 	File settings.txt.clean
 	File srm.exe
+	# Adb might still be running, make sure to kill it as well
+	IfFileExists adb.exe 0 continueAfterAdb
+		${nsProcess::KillProcess} "adb.exe" $2
+		Sleep 1000
+	continueAfterAdb:
+	File adb.exe
+	File AdbWinApi.dll
+	File AdbWinUsbApi.dll
 	WriteRegStr HKCU "Software\Clipupload" "" $INSTDIR
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "DisplayName" "Clipupload"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Clipupload" "UninstallString" '"$INSTDIR\Uninstall.exe"'
@@ -52,7 +75,13 @@ Section "Clipupload" SecProgram
 	
 	SetOutPath "$INSTDIR"
 	DetailPrint "Registering shell extension"
-	ExecWait "$INSTDIR\srm.exe install $\"$INSTDIR\ClipUploadShellExtension.dll$\" -codebase"
+	ReadRegStr $1 HKLM "Software\Microsoft\Net Framework Setup\NDP\v4\Full" "InstallPath"
+	IfErrors skipShellReg
+		ExecWait "$1\RegAsm.exe $\"$INSTDIR\ClipUploadShellExtension.dll$\""
+		ExecWait "$INSTDIR\srm.exe install $\"$INSTDIR\ClipUploadShellExtension.dll$\" -codebase"
+		${nsProcess::KillProcess} "explorer.exe" $2
+		${nsProcess::Unload}
+	skipShellReg:
 SectionEnd
 
 SectionGroup /e "Cloud hosting" SecCloudHosting
@@ -142,7 +171,13 @@ SectionGroup /e "Third-party" SecThirdParty
 SectionGroupEnd
 
 Section "Uninstall"
-	ExecWait "$INSTDIR\srm.exe uninstall $\"$INSTDIR\ClipUploadShellExtension.dll$\""
+	ReadRegStr $1 HKLM "Software\Microsoft\Net Framework Setup\NDP\v4\Full" "InstallPath"
+	IfErrors skipShellReg
+		ExecWait "$1\RegAsm.exe /unregister $\"$INSTDIR\ClipUploadShellExtension.dll$\""
+		ExecWait "$INSTDIR\srm.exe uninstall $\"$INSTDIR\ClipUploadShellExtension.dll$\""
+		${nsProcess::KillProcess} "explorer.exe" $2
+		${nsProcess::Unload}
+	skipShellReg:
 	Delete "$INSTDIR\Uninstall.exe"
 	RMDir /r "$INSTDIR"
 	Delete "$SMPROGRAMS\Nimble Clipupload.lnk"
