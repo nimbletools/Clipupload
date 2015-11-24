@@ -297,7 +297,7 @@ namespace Desktop
       } catch (Exception ex) { failReason = (ex.InnerException != null ? ex.InnerException.Message : ex.Message); }
 
       if (result) {
-        Uploaded("Image", "", "");
+        Uploaded("Image", DesktopPath + "/" + filename, "");
       } else {
         Failed(failReason);
       }
